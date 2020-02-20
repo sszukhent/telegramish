@@ -11,6 +11,10 @@
 .no-padding {
   padding: 0 !important;
 }
+.no-mp {
+  margin: 0 !important;
+  padding: 0 !important;
+}
 ::placeholder {
   color: #abafb0;
 }
@@ -22,6 +26,9 @@
 :-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: #abafb0;
+}
+body {
+  font-family: 'Lato', sans-serif;
 }
 #wrapper {
   min-height: 96vh;
@@ -52,6 +59,47 @@
 #chat-header-current {
   margin: 0 0 0.3rem 0;
   padding: 0 0 0 0.5rem;
+}
+#chat-input-section input {
+  margin: 0.4rem 0 0 0 !important;
+  display: block !important;
+  width: 70% !important;
+  padding: 0.5rem !important;
+  border: none !important;
+  transition: all 1s;
+  border-radius: 0.25rem !important;
+  box-shadow: none;
+}
+#chat-input-section input:focus {
+  box-shadow: none !important;
+}
+#upload-btn {
+  color: gray;
+  font-size: 1.2rem;
+  line-height: 5rem;
+  height: 1rem;
+}
+#upload-btn:hover {
+  color: #02bee8;
+}
+#submit-btn {
+  color: gray;
+  font-size: 1.5rem;
+  line-height: 5rem;
+  height: 1rem;
+}
+#submit-btn:hover {
+  color: #02bee8;
+}
+.chat-contacts-user-card {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0 !important;
+}
+.chat-contacts-current-user {
+  color: #02bee8;
+}
+.chat-contacts-title {
+  margin-bottom: 1.5rem !important;
 }
 .chat-contacts-scroll {
   max-height: 82vh;
@@ -124,19 +172,6 @@
 .speech-bubble-time {
   margin-left: 4px;
   font-weight: 300;
-}
-.chat-input-section input {
-  margin: 0.4rem 0 0 0 !important;
-  display: block !important;
-  width: 70% !important;
-  padding: 0.5rem !important;
-  border: none !important;
-  transition: all 1s;
-  border-radius: 0.25rem !important;
-  box-shadow: none;
-}
-.chat-input-section input:focus {
-  box-shadow: none !important;
 }
 .app-footer {
   margin: 0 0 0 0;
