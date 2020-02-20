@@ -6,3 +6,27 @@
   background-size: cover;
   border: solid 1px lightgray;
 }
+.speech-bubble-user {
+  margin: 0.5rem auto;
+  color: #303030;
+  min-height: 7vh;
+  height: 100%;
+  position: relative;
+  background: #c0e4eb;
+  border-radius: 0.4em;
+}
+.speech-bubble-contact {
+  margin: 0.5rem auto;
+  color: #303030;
+  min-height: 7vh;
+  height: 100%;
+  position: relative;
+  background: #e6f2f5;
+  border-radius: 0.4em;
+}
+.speech-bubble-contact p {
+  padding: 0rem;
+}
+.speech-bubble-user p {
+  padding: 0rem;
+}
