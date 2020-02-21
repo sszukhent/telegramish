@@ -15,9 +15,9 @@ const Join = () => {
           <div
             className='form-container z-depth-1 grey lighten-4 row'
             style={{
-              display: 'inline-block;',
-              padding: '32px 48px 0px 48px;',
-              border: '1px solid #EEE;'
+              display: 'inline-block',
+              padding: '32px 48px 0px 48px',
+              border: '1px solid #EEE'
             }}
           >
             <form className='col s12' method='post'>
@@ -74,7 +74,6 @@ const Join = () => {
             </form>
           </div>
         </div>
-        <a href='#!'>Create account</a>
       </center>
     </main>
   );
