@@ -23,6 +23,12 @@
     body {
       background: #fff;
     }
+    #submit-btn {
+        background-color: #02bee8;
+    }
+    #login-title {
+        color: #02bee8;
+    }
     .input-field {
         border: solid 2px lightgray;
         border-radius: .5rem;
@@ -43,7 +49,7 @@
     <center>
       <div class="section"></div>
 
-      <h5 class="indigo-text">Telegramish</h5>
+      <h5 id="login-title">Telegramish</h5>
       <div class="section"></div>
 
       <div class="container">
@@ -70,7 +76,7 @@
             <br />
             <center>
               <div class='row'>
-                <button type='submit' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Login</button>
+                <button type='submit' name='btn_login' id="submit-btn" class='col s12 btn btn-large waves-effect'>Login</button>
               </div>
             </center>
           </form>
