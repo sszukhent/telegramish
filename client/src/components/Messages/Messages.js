@@ -8,7 +8,7 @@ const Messages = ({ messages, name }) => (
   <Fragment>
     {messages.map((message, i) => (
       <ScrollToBottom>
-        <div>
+        <div key={i}>
           <Message message={message} name={name} />
         </div>
       </ScrollToBottom>

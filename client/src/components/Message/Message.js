@@ -15,7 +15,7 @@ const Message = ({ message: { user, text }, name }) => {
     <Fragment>
       <div className='col s8 speech-bubble-user'>
         <h6 className='speech-bubble-name'>
-          {user}
+          {trimmedName}
           <span className='speech-bubble-time'> 8:10 pm</span>
         </h6>
         <p>{text}</p>
@@ -25,7 +25,7 @@ const Message = ({ message: { user, text }, name }) => {
     <Fragment>
       <div className='col s8 offset-s4 speech-bubble-contact'>
         <h6 className='speech-bubble-name'>
-          {trimmedName}
+          {user}
           <span className='speech-bubble-time'> 8:10 pm</span>
         </h6>
         <p>{text}</p>
