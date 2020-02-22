@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
+import Messages from '../Messages/Messages';
 
 import '../Components.css';
 
@@ -45,133 +46,36 @@ const Chat = ({ location }) => {
     }
   };
 
-  console.log(message, messages);
-
   return (
     <Fragment>
       <div className='col s8 chat-feed'>
-        <ul>
-          <li className='col s8 offset-s4 speech-bubble-contact'>
-            <h7 className='speech-bubble-name'>
-              Kelsey Szukhent
-              <span className='speech-bubble-time'> 8:10 pm</span>
-            </h7>
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
-              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
-              alias a veritatis iusto sequi numquam saepe inventore velit,
-              officiis ab mollitia ut!
-            </p>
-          </li>
-          <li className='col s8 speech-bubble-user'>
-            <h7 className='speech-bubble-name'>
-              Sean Szukhent
-              <span className='speech-bubble-time'> 8:10 pm</span>
-            </h7>
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
-              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
-              alias a veritatis iusto sequi numquam saepe inventore velit,
-              officiis ab mollitia ut!
-            </p>
-          </li>
-          <li className='col s8 offset-s4 speech-bubble-contact'>
-            <h7 className='speech-bubble-name'>
-              Kelsey Szukhent
-              <span className='speech-bubble-time'> 8:10 pm</span>
-            </h7>
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
-              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
-              alias a veritatis iusto sequi numquam saepe inventore velit,
-              officiis ab mollitia ut!
-            </p>
-          </li>
-          <li className='col s8 speech-bubble-user'>
-            <h7 className='speech-bubble-name'>
-              Sean Szukhent
-              <span className='speech-bubble-time'> 8:10 pm</span>
-            </h7>
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
-              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
-              alias a veritatis iusto sequi numquam saepe inventore velit,
-              officiis ab mollitia ut!
-            </p>
-          </li>
-          <li className='col s8 offset-s4 speech-bubble-contact'>
-            <h7 className='speech-bubble-name'>
-              Kelsey Szukhent
-              <span className='speech-bubble-time'>8:10 pm</span>
-            </h7>
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
-              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
-              alias a veritatis iusto sequi numquam saepe inventore velit,
-              officiis ab mollitia ut!
-            </p>
-          </li>
-          <li className='col s8 speech-bubble-user'>
-            <h7 className='speech-bubble-name'>
-              Sean Szukhent
-              <span className='speech-bubble-time'> 8:10 pm</span>
-            </h7>
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
-              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
-              alias a veritatis iusto sequi numquam saepe inventore velit,
-              officiis ab mollitia ut!
-            </p>
-          </li>
-          <li className='col s8 offset-s4 speech-bubble-contact'>
-            <h7 className='speech-bubble-name'>
-              Kelsey Szukhent
-              <span className='speech-bubble-time'>8:10 pm</span>
-            </h7>
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
-              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
-              alias a veritatis iusto sequi numquam saepe inventore velit,
-              officiis ab mollitia ut!
-            </p>
-          </li>
-          <li className='col s8 speech-bubble-user'>
-            <h7 className='speech-bubble-name'>
-              Sean Szukhent
-              <span className='speech-bubble-time'> 8:10 pm</span>
-            </h7>
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
-              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
-              alias a veritatis iusto sequi numquam saepe inventore velit,
-              officiis ab mollitia ut!
-            </p>
-          </li>
-          <li className='col s8 offset-s4 speech-bubble-contact'>
-            <h7 className='speech-bubble-name'>
-              Kelsey Szukhent
-              <span className='speech-bubble-time'>8:10 pm</span>
-            </h7>
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
-              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
-              alias a veritatis iusto sequi numquam saepe inventore velit,
-              officiis ab mollitia ut!
-            </p>
-          </li>
-          <li className='col s8 speech-bubble-user'>
-            <h7 className='speech-bubble-name'>
-              Sean Szukhent
-              <span className='speech-bubble-time'> 8:10 pm</span>
-            </h7>
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
-              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
-              alias a veritatis iusto sequi numquam saepe inventore velit,
-              officiis ab mollitia ut!
-            </p>
-          </li>
-        </ul>
+        <Messages messages={messages} />
+      </div>
+
+      <div className='row app-footer'>
+        <div id='chat-contacts-footer' className='col s4'></div>
+        <div className='col s8'>
+          <div className='row no-mp'>
+            <div id='upload-btn' className='col s1'>
+              <i className='fas fa-upload no-mp'></i>
+            </div>
+            <div id='chat-input-section' className='col s9'>
+              <input
+                placeholder='Type a message...'
+                type='text'
+                className='col s8'
+                value={message}
+                onChange={event => setMessage(event.target.value)}
+                onKeyPress={event =>
+                  event.key === 'Enter' ? sendMessage(event) : null
+                }
+              />
+            </div>
+            <div id='submit-btn' className='col s1 offset-s1'>
+              <i className='far fa-paper-plane no-mp'></i>
+            </div>
+          </div>
+        </div>
       </div>
     </Fragment>
   );
