@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
+
+import '../Components.css';
 
 let socket;
 
@@ -46,17 +48,132 @@ const Chat = ({ location }) => {
   console.log(message, messages);
 
   return (
-    <div className='outerContainer'>
-      <div className='container'>
-        <input
-          value={message}
-          onChange={event => setMessage(event.target.value)}
-          onKeyPress={event =>
-            event.key === 'Enter' ? sendMessage(event) : null
-          }
-        />
+    <Fragment>
+      <div className='col s8 chat-feed'>
+        <ul>
+          <li className='col s8 offset-s4 speech-bubble-contact'>
+            <h7 className='speech-bubble-name'>
+              Kelsey Szukhent
+              <span className='speech-bubble-time'> 8:10 pm</span>
+            </h7>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
+              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
+              alias a veritatis iusto sequi numquam saepe inventore velit,
+              officiis ab mollitia ut!
+            </p>
+          </li>
+          <li className='col s8 speech-bubble-user'>
+            <h7 className='speech-bubble-name'>
+              Sean Szukhent
+              <span className='speech-bubble-time'> 8:10 pm</span>
+            </h7>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
+              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
+              alias a veritatis iusto sequi numquam saepe inventore velit,
+              officiis ab mollitia ut!
+            </p>
+          </li>
+          <li className='col s8 offset-s4 speech-bubble-contact'>
+            <h7 className='speech-bubble-name'>
+              Kelsey Szukhent
+              <span className='speech-bubble-time'> 8:10 pm</span>
+            </h7>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
+              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
+              alias a veritatis iusto sequi numquam saepe inventore velit,
+              officiis ab mollitia ut!
+            </p>
+          </li>
+          <li className='col s8 speech-bubble-user'>
+            <h7 className='speech-bubble-name'>
+              Sean Szukhent
+              <span className='speech-bubble-time'> 8:10 pm</span>
+            </h7>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
+              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
+              alias a veritatis iusto sequi numquam saepe inventore velit,
+              officiis ab mollitia ut!
+            </p>
+          </li>
+          <li className='col s8 offset-s4 speech-bubble-contact'>
+            <h7 className='speech-bubble-name'>
+              Kelsey Szukhent
+              <span className='speech-bubble-time'>8:10 pm</span>
+            </h7>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
+              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
+              alias a veritatis iusto sequi numquam saepe inventore velit,
+              officiis ab mollitia ut!
+            </p>
+          </li>
+          <li className='col s8 speech-bubble-user'>
+            <h7 className='speech-bubble-name'>
+              Sean Szukhent
+              <span className='speech-bubble-time'> 8:10 pm</span>
+            </h7>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
+              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
+              alias a veritatis iusto sequi numquam saepe inventore velit,
+              officiis ab mollitia ut!
+            </p>
+          </li>
+          <li className='col s8 offset-s4 speech-bubble-contact'>
+            <h7 className='speech-bubble-name'>
+              Kelsey Szukhent
+              <span className='speech-bubble-time'>8:10 pm</span>
+            </h7>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
+              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
+              alias a veritatis iusto sequi numquam saepe inventore velit,
+              officiis ab mollitia ut!
+            </p>
+          </li>
+          <li className='col s8 speech-bubble-user'>
+            <h7 className='speech-bubble-name'>
+              Sean Szukhent
+              <span className='speech-bubble-time'> 8:10 pm</span>
+            </h7>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
+              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
+              alias a veritatis iusto sequi numquam saepe inventore velit,
+              officiis ab mollitia ut!
+            </p>
+          </li>
+          <li className='col s8 offset-s4 speech-bubble-contact'>
+            <h7 className='speech-bubble-name'>
+              Kelsey Szukhent
+              <span className='speech-bubble-time'>8:10 pm</span>
+            </h7>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
+              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
+              alias a veritatis iusto sequi numquam saepe inventore velit,
+              officiis ab mollitia ut!
+            </p>
+          </li>
+          <li className='col s8 speech-bubble-user'>
+            <h7 className='speech-bubble-name'>
+              Sean Szukhent
+              <span className='speech-bubble-time'> 8:10 pm</span>
+            </h7>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis
+              vitae consequuntur nihil itaque voluptatem maiores debitis, omnis
+              alias a veritatis iusto sequi numquam saepe inventore velit,
+              officiis ab mollitia ut!
+            </p>
+          </li>
+        </ul>
       </div>
-    </div>
+    </Fragment>
   );
 };
 
