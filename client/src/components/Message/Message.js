@@ -8,7 +8,12 @@ export const Message = ({ message: { user, text }, name }) => {
 
   const trimmedName = name.trim().toLowerCase();
 
-  console.log(name);
+  const timestamp = Date.now(); // This would be the timestamp you want to format
+
+  const currTime = new Intl.DateTimeFormat('en-US', {
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(timestamp);
 
   if (user === trimmedName) {
     isSentByCurrentUser = true;
@@ -18,7 +23,7 @@ export const Message = ({ message: { user, text }, name }) => {
     <div id='speech-bubble-user' className='col s8 offset-s4'>
       <h6 className='speech-bubble-name'>
         {trimmedName}
-        <span className='stlyes.speech-bubble-time'> 8:10 pm</span>
+        <span className='speech-bubble-time'> {currTime}</span>
       </h6>
       <p>{ReactEmoji.emojify(text)}</p>
     </div>
@@ -26,7 +31,7 @@ export const Message = ({ message: { user, text }, name }) => {
     <div id='speech-bubble-contact' className='col s8'>
       <h6 className='speech-bubble-name'>
         {user}
-        <span className='speech-bubble-time'> 8:10 pm</span>
+        <span className='speech-bubble-time'> {currTime}</span>
       </h6>
       <p>{ReactEmoji.emojify(text)}</p>
     </div>
