@@ -2,6 +2,10 @@ import React, { useState, useEffect, Fragment } from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
 import Messages from '../Messages/Messages';
+import UserList from '../UserList/UserList';
+import ChatInput from '../ChatInput/ChatInput';
+import RoomHeader from '../RoomHeader/RoomHeader';
+import Search from '../Search/Search';
 
 import '../Components.css';
 
@@ -43,37 +47,30 @@ export const Chat = ({ location }) => {
 
     if (message) {
       socket.emit('sendMessage', message, () => setMessage(''));
+      console.log(message);
     }
   };
 
   return (
     <Fragment>
-      <div className='col s8 chat-feed'>
-        <Messages messages={messages} name={name} />
-      </div>
+      <div id='app-container' className='container'>
+        <div id='wrapper' className='card'>
+          <div className='row app-header' style={{ margin: '0 auto' }}>
+            <Search />
+            <RoomHeader room={room} />
+          </div>
 
-      <div className='row app-footer'>
-        <div id='chat-contacts-footer' className='col s4'></div>
-        <div className='col s8'>
-          <div className='row no-mp'>
-            <div id='upload-btn' className='col s1'>
-              <i className='fas fa-upload no-mp'></i>
-            </div>
-            <div id='chat-input-section' className='col s9'>
-              <input
-                placeholder='Type a message...'
-                type='text'
-                className='col s8'
-                value={message}
-                onChange={event => setMessage(event.target.value)}
-                onKeyPress={event =>
-                  event.key === 'Enter' ? sendMessage(event) : null
-                }
-              />
-            </div>
-            <div id='submit-btn' className='col s1 offset-s1'>
-              <i className='far fa-paper-plane no-mp'></i>
-            </div>
+          <div
+            className='row app-body'
+            style={{ minHeight: '82vh', margin: '0 auto' }}
+          >
+            <UserList />
+            <Messages messages={messages} name={name} />
+            <ChatInput
+              message={message}
+              setMessage={setMessage}
+              sendMessage={sendMessage}
+            />
           </div>
         </div>
       </div>

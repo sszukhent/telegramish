@@ -2,12 +2,12 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Join from './components/Join/Join';
-import MainScreen from './components/MainScreen/MainScreen';
+import Chat from './components/Chat/Chat';
 
 const App = () => (
   <Router>
     <Route path='/' exact component={Join} />
-    <Route path='/chat' exact component={MainScreen} />
+    <Route path='/chat' exact component={Chat} />
   </Router>
 );
 
