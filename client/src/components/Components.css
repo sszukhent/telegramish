@@ -129,7 +129,7 @@ body {
   border: solid 1px lightgray;
   overflow: hidden;
 }
-.chat-feed ul {
+#chat-feed-container {
   max-height: 82vh;
   min-height: 82vh;
   margin: 0 auto;
@@ -144,7 +144,8 @@ body {
   font-size: 0.9rem;
 }
 #speech-bubble-user {
-  margin: 0.5rem auto;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   color: #303030;
   min-height: 7vh;
   height: 100%;
@@ -153,7 +154,8 @@ body {
   border-radius: 0.4em;
 }
 #speech-bubble-contact {
-  margin: 0.5rem auto;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   color: #303030;
   min-height: 7vh;
   height: 100%;

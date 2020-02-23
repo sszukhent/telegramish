@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import ReactEmoji from 'react-emoji';
 
 import '../Components.css';
 
@@ -14,25 +15,21 @@ export const Message = ({ message: { user, text }, name }) => {
   }
 
   return isSentByCurrentUser ? (
-    <Fragment>
-      <div id='speech-bubble-user' className='col s8'>
-        <h6 className='speech-bubble-name'>
-          {trimmedName}
-          <span className='stlyes.speech-bubble-time'> 8:10 pm</span>
-        </h6>
-        <p>{text}</p>
-      </div>
-    </Fragment>
+    <div id='speech-bubble-user' className='col s8 offset-s4'>
+      <h6 className='speech-bubble-name'>
+        {trimmedName}
+        <span className='stlyes.speech-bubble-time'> 8:10 pm</span>
+      </h6>
+      <p>{ReactEmoji.emojify(text)}</p>
+    </div>
   ) : (
-    <Fragment>
-      <div id='speech-bubble-contact' className='col s8 offset-s4'>
-        <h6 className='speech-bubble-name'>
-          {user}
-          <span className='speech-bubble-time'> 8:10 pm</span>
-        </h6>
-        <p>{text}</p>
-      </div>
-    </Fragment>
+    <div id='speech-bubble-contact' className='col s8'>
+      <h6 className='speech-bubble-name'>
+        {user}
+        <span className='speech-bubble-time'> 8:10 pm</span>
+      </h6>
+      <p>{ReactEmoji.emojify(text)}</p>
+    </div>
   );
 };
 
