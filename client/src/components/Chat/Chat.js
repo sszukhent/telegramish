@@ -49,7 +49,7 @@ export const Chat = ({ location }) => {
   return (
     <Fragment>
       <div className='col s8 chat-feed'>
-        <Messages messages={messages} />
+        <Messages messages={messages} name={name} />
       </div>
 
       <div className='row app-footer'>

@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { Chat } from '../Chat/Chat';
 import { Search } from '../Search/Search';
-import { RoomHeader } from '../RoomHeader/RoomHeader';
 import { UserList } from '../UserList/UserList';
+import { RoomHeader } from '../RoomHeader/RoomHeader';
 
 import '../Components.css';
 
@@ -16,6 +16,7 @@ const MainScreen = () => (
           <Search />
           <RoomHeader />
         </div>
+
         <div
           className='row app-body'
           style={{ minHeight: '82vh', margin: '0 auto' }}

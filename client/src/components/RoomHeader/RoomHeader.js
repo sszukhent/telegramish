@@ -2,13 +2,13 @@ import React, { Fragment } from 'react';
 
 import '../Components.css';
 
-export const RoomHeader = () => {
+export const RoomHeader = users => {
   return (
     <Fragment>
       <div className='col s8 '>
         <div id='chat-header-current'>
           <div className='row no-margin'>
-            <span className='flow-text'>Sean</span>
+            <span className='flow-text'>{users.room}</span>
           </div>
           <div className='row no-margin'>
             <span>1 Member</span>
