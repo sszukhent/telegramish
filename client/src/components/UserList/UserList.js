@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import '../Components.css';
 import placeholderImg from '../../img/placeholder.png';
 
-const UserList = () => {
+export const UserList = () => {
   return (
     <Fragment>
       <div className='col s4 chat-contacts'>

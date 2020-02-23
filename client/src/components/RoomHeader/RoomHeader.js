@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import '../Components.css';
 
-const RoomHeader = () => {
+export const RoomHeader = () => {
   return (
     <Fragment>
       <div className='col s8 '>

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import '../Components.css';
 
-const Search = () => {
+export const Search = () => {
   return (
     <Fragment>
       <div className='col s4'>

@@ -143,22 +143,22 @@ body {
   margin-top: 2px;
   font-size: 0.9rem;
 }
-.speech-bubble-user {
+#speech-bubble-user {
   margin: 0.5rem auto;
   color: #303030;
   min-height: 7vh;
   height: 100%;
   position: relative;
-  background: #c0e4eb;
+  background: #c0e4eb !important;
   border-radius: 0.4em;
 }
-.speech-bubble-contact {
+#speech-bubble-contact {
   margin: 0.5rem auto;
   color: #303030;
   min-height: 7vh;
   height: 100%;
   position: relative;
-  background: #e6f2f5;
+  background: #e6f2f5 !important;
   border-radius: 0.4em;
 }
 .speech-bubble-contact p {

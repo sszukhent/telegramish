@@ -7,7 +7,7 @@ import '../Components.css';
 
 let socket;
 
-const Chat = ({ location }) => {
+export const Chat = ({ location }) => {
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
   const [message, setMessage] = useState('');
@@ -17,10 +17,10 @@ const Chat = ({ location }) => {
   useEffect(() => {
     const { name, room } = queryString.parse(location.search);
 
-    socket = io(ENDPOINT);
-
     setName(name);
     setRoom(room);
+
+    socket = io(ENDPOINT);
 
     socket.emit('join', { name, room }, () => {});
 
