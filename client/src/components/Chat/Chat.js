@@ -28,6 +28,8 @@ export const Chat = ({ location }) => {
 
     socket.emit('join', { name, room }, () => {});
 
+    // this is a comment
+
     return () => {
       socket.emit('disconnect');
 
@@ -43,7 +45,7 @@ export const Chat = ({ location }) => {
 
   // Sending messages
   const sendMessage = event => {
-    event.preventDefault();
+        event.preventDefault();
 
     if (message) {
       socket.emit('sendMessage', message, () => setMessage(''));
