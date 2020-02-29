@@ -109,7 +109,7 @@ body {
   height: 100%;
   overflow: hidden;
 }
-.chat-contacts-scroll ul {
+.chat-contacts-scroll {
   max-height: 82vh;
   min-height: 82vh;
   width: 100%;

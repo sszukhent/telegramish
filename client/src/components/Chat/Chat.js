@@ -19,6 +19,7 @@ const Chat = props => {
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
   const [message, setMessage] = useState('');
+  const messagesEndRef = React.createRef();
   const ENDPOINT = 'localhost:5000';
 
   useEffect(() => {
@@ -30,27 +31,23 @@ const Chat = props => {
     socket = io(ENDPOINT);
 
     socket.emit('join', { name, room }, () => {});
-
-    // this is a comment
-
-    return () => {
-      socket.emit('disconnect');
-
-      socket.off();
-    };
   }, [ENDPOINT, location.search]);
 
   useEffect(() => {
     socket.on('message', message => {
       setMessages([...messages, message]);
     });
-  }, [messages]);
 
-  console.log(messages);
+    return () => {
+      socket.emit('disconnect');
+
+      socket.off();
+    };
+  }, [messages]);
 
   // Sending messages
   const sendMessage = event => {
-        event.preventDefault();
+    event.preventDefault();
 
     if (message) {
       socket.emit('sendMessage', message, () => setMessage(''));
@@ -71,7 +68,7 @@ const Chat = props => {
             style={{ minHeight: '82vh', margin: '0 auto' }}
           >
             <UserList />
-            <Messages name={name} />
+            <Messages messagesEndRef={messagesEndRef} name={name} />
             <ChatInput
               message={message}
               setMessage={setMessage}

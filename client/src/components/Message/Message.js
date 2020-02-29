@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactEmoji from 'react-emoji';
-import { connect } from 'react-redux';
 
 import '../Components.css';
 
