@@ -31,6 +31,8 @@ const Chat = props => {
 
     socket.emit('join', { name, room }, () => {});
 
+    // this is a comment
+
     return () => {
       socket.emit('disconnect');
 
@@ -48,7 +50,7 @@ const Chat = props => {
 
   // Sending messages
   const sendMessage = event => {
-    event.preventDefault();
+        event.preventDefault();
 
     if (message) {
       socket.emit('sendMessage', message, () => setMessage(''));
