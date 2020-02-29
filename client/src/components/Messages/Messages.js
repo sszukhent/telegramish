@@ -1,5 +1,7 @@
 import React from 'react';
 import Message from '../Message/Message';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import '../Components.css';
 
@@ -15,4 +17,12 @@ export const Messages = ({ messages, name }) => (
   </div>
 );
 
-export default Messages;
+Messages.propTypes = {
+  messages: PropTypes.array
+};
+
+const mapStateToProps = state => ({
+  messages: state.messageReducer.messages
+});
+
+export default connect(mapStateToProps)(Messages);

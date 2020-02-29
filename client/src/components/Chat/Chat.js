@@ -6,16 +6,19 @@ import UserList from '../UserList/UserList';
 import ChatInput from '../ChatInput/ChatInput';
 import RoomHeader from '../RoomHeader/RoomHeader';
 import Search from '../Search/Search';
+import { connect } from 'react-redux';
+import * as actionCreators from '../../actions/actions';
+import PropTypes from 'prop-types';
 
 import '../Components.css';
 
 let socket;
 
-export const Chat = ({ location }) => {
+const Chat = props => {
+  const { location, setMessages, messages } = props;
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
   const ENDPOINT = 'localhost:5000';
 
   useEffect(() => {
@@ -41,6 +44,8 @@ export const Chat = ({ location }) => {
     });
   }, [messages]);
 
+  console.log(messages);
+
   // Sending messages
   const sendMessage = event => {
     event.preventDefault();
@@ -64,7 +69,7 @@ export const Chat = ({ location }) => {
             style={{ minHeight: '82vh', margin: '0 auto' }}
           >
             <UserList />
-            <Messages messages={messages} name={name} />
+            <Messages name={name} />
             <ChatInput
               message={message}
               setMessage={setMessage}
@@ -77,4 +82,14 @@ export const Chat = ({ location }) => {
   );
 };
 
-export default Chat;
+Chat.propTypes = {
+  messages: PropTypes.array.isRequired,
+  setMessages: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  setMessages: state.messageReducer.setMessages,
+  messages: state.messageReducer.messages
+});
+
+export default connect(mapStateToProps, actionCreators)(Chat);

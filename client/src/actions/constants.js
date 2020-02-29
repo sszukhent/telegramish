@@ -10,4 +10,7 @@
 // export const GET_PROFILE = 'GET_PROFILE';
 // export const PROFILE_ERROR = 'PROFILE_ERROR';
 // export const CLEAR_PROFILE = 'CLEAR_PROFILE';
-export const SEND_MESSAGE = 'SEND_MESSAGE';
+export const SET_MESSAGE = 'SET_MESSAGE';
+export const SET_MESSAGES = 'SET_MESSAGES';
+export const MESSAGE = 'MESSAGE';
+export const MESSAGES = 'MESSAGES';
