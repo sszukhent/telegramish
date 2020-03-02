@@ -1,4 +1,5 @@
 const express = require('express');
+const connectDB = require('./config/db');
 const http = require('http');
 const socketio = require('socket.io');
 
@@ -11,6 +12,9 @@ const router = require('./router');
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
+
+// Connect to DB
+connectDB();
 
 io.on('connection', socket => {
   socket.on('join', ({ name, room }, callback) => {
