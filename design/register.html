@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>Sign Up</title>
 
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -64,7 +64,7 @@
       <center>
         <div class="section"></div>
 
-        <h5 id="login-title"><i class="fas fa-bolt"></i> Amp Login</h5>
+        <h5 id="login-title"><i class="fas fa-bolt"></i> Get Amp'd</h5>
         <div class="section"></div>
 
         <div class="container">
@@ -79,6 +79,12 @@
 
               <div class="row">
                 <div class="input-field col s12">
+                  <input placeholder="Name" name="name" id="name" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s12">
                   <input
                     placeholder="Email"
                     type="email"
@@ -87,7 +93,6 @@
                   />
                 </div>
               </div>
-
               <div class="row">
                 <div class="input-field col s12">
                   <input
@@ -96,6 +101,17 @@
                     type="password"
                     name="password"
                     id="password"
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input
+                    class="validate"
+                    placeholder="Confirm Password"
+                    type="password"
+                    name="confirm-password"
+                    id="confirm-password"
                   />
                 </div>
               </div>
@@ -109,14 +125,13 @@
                     id="submit-btn"
                     class="col s12 btn btn-large waves-effect"
                   >
-                    Login
+                    Register
                   </button>
                 </div>
               </center>
             </form>
           </div>
         </div>
-        <a href="#!">Create account</a>
       </center>
     </main>
   </body>

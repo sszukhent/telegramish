@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const connectDB = require('./config/db');
 const http = require('http');
 const socketio = require('socket.io');
@@ -17,6 +18,7 @@ const io = socketio(server);
 connectDB();
 
 // Init middleware
+app.use(cors());
 app.use(express.json({ extended: false }));
 
 app.get('/', (req, res) => res.send('API Running'));

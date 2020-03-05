@@ -14,7 +14,12 @@ main {
   max-width: 600px;
 }
 #submit-btn {
-  background-color: #02bee8;
+  margin-top: 0;
+  font-family: Roboto;
+  color: white !important;
+  background-color: #02bee8 !important;
+  height: 4rem !important;
+  line-height: 0 !important;
 }
 #login-title {
   color: #02bee8;
@@ -32,4 +37,7 @@ main {
 .input-field input:focus {
   border: none;
   box-shadow: none;
+}
+.mb0 {
+  margin-bottom: 0 !important;
 }

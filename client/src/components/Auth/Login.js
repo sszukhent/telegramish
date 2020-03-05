@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Join.css';
+import './Auth.css';
 
-const Join = () => {
+const Login = () => {
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
 
   return (
     <main id='join-form-wrapper'>
       <center>
-        <h5 id='login-title'>Telegramish</h5>
+        <h5 id='login-title'>
+          <i class='fas fa-bolt'></i> Amp Login
+        </h5>
 
         <div className='container'>
           <div
@@ -38,7 +40,7 @@ const Join = () => {
                 </div>
               </div>
 
-              <div className='row'>
+              <div className='row mb0'>
                 <div className='input-field col s12'>
                   <input
                     className='validate'
@@ -54,12 +56,7 @@ const Join = () => {
               <br />
               <center>
                 <div className='row'>
-                  <Link
-                    onClick={event =>
-                      !name || !room ? event.preventDefault() : null
-                    }
-                    to={`/chat?name=${name}&room=${room}`}
-                  >
+                  <Link>
                     <button
                       type='submit'
                       name='btn_login'
@@ -74,9 +71,12 @@ const Join = () => {
             </form>
           </div>
         </div>
+        <Link to='/register'>
+          <a>Create account</a>
+        </Link>
       </center>
     </main>
   );
 };
 
-export default Join;
+export default Login;
