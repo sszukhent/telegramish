@@ -8,6 +8,7 @@ import RoomHeader from '../RoomHeader/RoomHeader';
 import Search from '../Search/Search';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actions';
+import { ENDPOINT } from '../../actions/constants';
 import PropTypes from 'prop-types';
 
 import '../Components.css';
@@ -16,34 +17,33 @@ let socket;
 
 const Chat = props => {
   const { location, setMessages, messages } = props;
-  const [name, setName] = useState('');
-  const [room, setRoom] = useState('');
+  // const [name, setName] = useState('');
+  // const [room, setRoom] = useState('');
   const [message, setMessage] = useState('');
   const messagesEndRef = React.createRef();
-  const ENDPOINT = 'localhost:5000';
 
-  useEffect(() => {
-    const { name, room } = queryString.parse(location.search);
+  // useEffect(() => {
+  //   const { name, room } = queryString.parse(location.search);
 
-    setName(name);
-    setRoom(room);
+  //   setName(name);
+  //   setRoom(room);
 
-    socket = io(ENDPOINT);
+  //   socket = io(ENDPOINT);
 
-    socket.emit('join', { name, room }, () => {});
-  }, [ENDPOINT, location.search]);
+  //   socket.emit('join', { name, room }, () => {});
+  // }, [ENDPOINT, location.search]);
 
-  useEffect(() => {
-    socket.on('message', message => {
-      setMessages([...messages, message]);
-    });
+  // useEffect(() => {
+  //   socket.on('message', message => {
+  //     setMessages([...messages, message]);
+  //   });
 
-    return () => {
-      socket.emit('disconnect');
+  //   return () => {
+  //     socket.emit('disconnect');
 
-      socket.off();
-    };
-  }, [messages]);
+  //     socket.off();
+  //   };
+  // }, [messages]);
 
   // Sending messages
   const sendMessage = event => {
@@ -60,7 +60,7 @@ const Chat = props => {
         <div id='wrapper' className='card'>
           <div className='row app-header' style={{ margin: '0 auto' }}>
             <Search />
-            <RoomHeader room={room} />
+            <RoomHeader room={'room'} />
           </div>
 
           <div
@@ -68,7 +68,7 @@ const Chat = props => {
             style={{ minHeight: '82vh', margin: '0 auto' }}
           >
             <UserList />
-            <Messages messagesEndRef={messagesEndRef} name={name} />
+            <Messages messagesEndRef={messagesEndRef} name={'name'} />
             <ChatInput
               message={message}
               setMessage={setMessage}
@@ -87,8 +87,7 @@ Chat.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  setMessages: state.messageReducer.setMessages,
-  messages: state.messageReducer.messages
+  messages: state.profile.messages
 });
 
 export default connect(mapStateToProps, actionCreators)(Chat);

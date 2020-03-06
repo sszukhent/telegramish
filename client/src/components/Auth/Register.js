@@ -1,10 +1,10 @@
 import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import * as actionCreators from '../../actions/actions';
 import './Auth.css';
 
-const Register = ({ register }) => {
+const Register = ({ register, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,7 +17,7 @@ const Register = ({ register }) => {
   const inputToState = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const submitForm = e => {
+  const submitForm = async e => {
     e.preventDefault();
     if (password !== confirmPassword) {
       console.log('Passwords do not match.');
@@ -25,6 +25,11 @@ const Register = ({ register }) => {
       register({ name, email, password });
     }
   };
+
+  // Redirect when registered
+  if (isAuthenticated) {
+    return <Redirect to='/Chat' />;
+  }
 
   return (
     <main>
@@ -122,4 +127,8 @@ const Register = ({ register }) => {
   );
 };
 
-export default connect(null, actionCreators)(Register);
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, actionCreators)(Register);

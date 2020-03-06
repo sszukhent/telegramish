@@ -73,6 +73,9 @@ body {
 #chat-input-section input:focus {
   box-shadow: none !important;
 }
+#currentUserFooter {
+  margin: 1rem 0 0 0;
+}
 #upload-btn {
   color: gray;
   font-size: 1.2rem;

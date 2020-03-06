@@ -4,9 +4,15 @@ import {
   SET_MESSAGES,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
   USER_LOADED,
   AUTH_ERROR,
-  ENDPOINT
+  GET_PROFILE,
+  PROFILE_ERROR,
+  CLEAR_PROFILE,
+  ENDPOINT,
+  LOGOUT
 } from './constants';
 
 export const setMessages = message => dispatch => {
@@ -27,13 +33,14 @@ export const register = ({ name, email, password }) => async dispatch => {
   const body = JSON.stringify({ name, email, password });
 
   try {
-    console.log(body);
     const res = await axios.post(`${ENDPOINT}/api/users`, body, config);
 
     dispatch({
       type: REGISTER_SUCCESS,
       payload: res.data
     });
+
+    dispatch(loadUser());
   } catch (err) {
     dispatch({
       type: REGISTER_FAIL
@@ -59,4 +66,48 @@ export const loadUser = () => async dispatch => {
       type: AUTH_ERROR
     });
   }
+};
+
+// Login User
+export const login = (email, password) => async dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+
+  const body = JSON.stringify({ email, password });
+
+  try {
+    const res = await axios.post(`${ENDPOINT}/api/auth`, body, config);
+
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data
+    });
+
+    dispatch(loadUser());
+  } catch (err) {
+    dispatch({
+      type: LOGIN_FAIL
+    });
+  }
+};
+
+// // Create Profile
+// export const createProfile = () => async dispatch => {
+
+// }
+
+// // Load Profile
+// export const loadProfile = ({user, messages}) => async dispatch => {
+
+// }
+
+// Logout and clear profile
+
+export const logout = () => dispatch => {
+  dispatch({
+    type: LOGOUT
+  });
 };

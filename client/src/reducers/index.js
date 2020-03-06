@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import messageReducer from './messageReducer';
 import auth from './auth';
+import profile from './profile';
 
 export default combineReducers({
   auth,
-  messageReducer
+  profile
 });

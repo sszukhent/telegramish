@@ -1,10 +1,34 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actionCreators from '../../actions/actions';
 import './Auth.css';
 
-const Login = () => {
-  const [name, setName] = useState('');
-  const [room, setRoom] = useState('');
+const Login = ({ login, isAuthenticated }) => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+
+  const { email, password } = formData;
+
+  const inputToState = e => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const submitForm = async e => {
+    e.preventDefault();
+    if (!email || !password) {
+      console.log('Valid email and password required');
+    } else {
+      login(email, password);
+    }
+  };
+
+  // Redirect when logged in
+  if (isAuthenticated) {
+    return <Redirect to='/Chat' />;
+  }
 
   return (
     <main id='join-form-wrapper'>
@@ -22,7 +46,7 @@ const Login = () => {
               border: '1px solid #EEE'
             }}
           >
-            <form className='col s12' method='post'>
+            <form className='col s12' onSubmit={e => submitForm(e)}>
               <div className='row'>
                 <div className='col s12'></div>
               </div>
@@ -35,7 +59,8 @@ const Login = () => {
                     type='email'
                     name='email'
                     id='email'
-                    onChange={event => setName(event.target.value)}
+                    value={email}
+                    onChange={e => inputToState(e)}
                   />
                 </div>
               </div>
@@ -48,7 +73,8 @@ const Login = () => {
                     type='password'
                     name='password'
                     id='password'
-                    onChange={event => setRoom(event.target.value)}
+                    value={password}
+                    onChange={e => inputToState(e)}
                   />
                 </div>
               </div>
@@ -56,16 +82,14 @@ const Login = () => {
               <br />
               <center>
                 <div className='row'>
-                  <Link>
-                    <button
-                      type='submit'
-                      name='btn_login'
-                      id='submit-btn'
-                      className='col s12 btn btn-large waves-effect'
-                    >
-                      Login
-                    </button>
-                  </Link>
+                  <button
+                    type='submit'
+                    name='btn_login'
+                    id='submit-btn'
+                    className='col s12 btn btn-large waves-effect'
+                  >
+                    Login
+                  </button>
                 </div>
               </center>
             </form>
@@ -79,4 +103,8 @@ const Login = () => {
   );
 };
 
-export default Login;
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, actionCreators)(Login);

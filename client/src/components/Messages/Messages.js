@@ -34,7 +34,7 @@ Messages.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  messages: state.messageReducer.messages
+  messages: state.profile.messages
 });
 
 export default connect(mapStateToProps)(Messages);
