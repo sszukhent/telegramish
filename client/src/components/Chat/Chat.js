@@ -16,34 +16,46 @@ import '../Components.css';
 let socket;
 
 const Chat = props => {
-  const { location, setMessages, messages } = props;
+  const {
+    location,
+    loadConvo,
+    loadUsersList,
+    setName,
+    setRoom,
+    setMessages,
+    messages
+  } = props;
   // const [name, setName] = useState('');
   // const [room, setRoom] = useState('');
   const [message, setMessage] = useState('');
   const messagesEndRef = React.createRef();
+  const name = 'Sean';
+  const room = 'Test Room';
 
-  // useEffect(() => {
-  //   const { name, room } = queryString.parse(location.search);
+  useEffect(() => {
+    // const { name, room } = queryString.parse(location.search);
 
-  //   setName(name);
-  //   setRoom(room);
+    setName(name);
+    setRoom(room);
+    loadConvo();
+    loadUsersList();
 
-  //   socket = io(ENDPOINT);
+    socket = io(ENDPOINT);
 
-  //   socket.emit('join', { name, room }, () => {});
-  // }, [ENDPOINT, location.search]);
+    socket.emit('join', { name, room }, () => {});
+  }, [ENDPOINT]);
 
-  // useEffect(() => {
-  //   socket.on('message', message => {
-  //     setMessages([...messages, message]);
-  //   });
+  useEffect(() => {
+    socket.on('message', message => {
+      setMessages([...messages, message]);
+    });
 
-  //   return () => {
-  //     socket.emit('disconnect');
+    return () => {
+      socket.emit('disconnect');
 
-  //     socket.off();
-  //   };
-  // }, [messages]);
+      socket.off();
+    };
+  }, [messages]);
 
   // Sending messages
   const sendMessage = event => {
@@ -56,11 +68,12 @@ const Chat = props => {
 
   return (
     <Fragment>
-      <div id='app-container' className='container'>
+      {/* add className='container' when done */}
+      <div id='app-container'>
         <div id='wrapper' className='card'>
           <div className='row app-header' style={{ margin: '0 auto' }}>
             <Search />
-            <RoomHeader room={'room'} />
+            <RoomHeader room={room} />
           </div>
 
           <div
@@ -68,7 +81,7 @@ const Chat = props => {
             style={{ minHeight: '82vh', margin: '0 auto' }}
           >
             <UserList />
-            <Messages messagesEndRef={messagesEndRef} name={'name'} />
+            <Messages messagesEndRef={messagesEndRef} name={name} />
             <ChatInput
               message={message}
               setMessage={setMessage}
@@ -87,7 +100,9 @@ Chat.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  messages: state.profile.messages
+  messages: state.conversations.messages
+  // name: state.auth.user.name,
+  // room: state.auth.room
 });
 
 export default connect(mapStateToProps, actionCreators)(Chat);

@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import auth from './auth';
-import profile from './profile';
+import conversations from './conversations';
 
 export default combineReducers({
   auth,
-  profile
+  conversations
 });

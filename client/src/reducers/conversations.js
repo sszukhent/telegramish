@@ -1,14 +1,17 @@
 import {
   GET_PROFILE,
+  LOAD_CONVERSATION,
   PROFILE_ERROR,
   CLEAR_PROFILE,
-  SET_MESSAGES
+  USERS_LIST,
+  SET_ROOM,
+  SET_NAME
 } from '../actions/constants';
 
 const initialState = {
-  profile: null,
-  profiles: [],
+  members: [],
   messages: [],
+  room: '',
   loading: true,
   error: {}
 };
@@ -23,9 +26,19 @@ export default function(state = initialState, action) {
         profile: payload,
         loading: false
       };
-    case SET_MESSAGES:
-      return { ...state, messages: payload };
-
+    case SET_ROOM:
+      return { ...state, room: payload };
+    case SET_NAME:
+      return { ...state, name: payload };
+    // case SET_MESSAGES:
+    //   return { ...state, messages: payload };
+    case LOAD_CONVERSATION:
+      const { members, messages } = payload[0];
+      return {
+        ...state,
+        members: members,
+        messages: messages
+      };
     case PROFILE_ERROR:
       return {
         ...state,

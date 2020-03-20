@@ -27,6 +27,7 @@ app.get('/', (req, res) => res.send('API Running'));
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/conversations', require('./routes/api/conversations'));
+app.use('/api/messages', require('./routes/api/messages'));
 
 // io.on('connection', socket => {
 //   socket.on('chat', ({ name, room }, callback) => {

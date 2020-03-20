@@ -21,6 +21,19 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+// @route GET api/auth/all
+// @desc Get all users from DB
+// @access Private
+router.get('/all', auth, async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
 // @route POST api/auth
 // @desc Authenticate user and get token
 // @access Public

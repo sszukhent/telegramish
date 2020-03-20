@@ -1,25 +1,37 @@
-import React, { Fragment } from 'react';
-// import { connect } from 'react-router-dom';
+import React, { Fragment, useEffect } from 'react';
+import UserCard from '../UserList/UserCard';
+import { connect } from 'react-redux';
+import * as actionCreators from '../../actions/actions';
 import '../Components.css';
-// import placeholderImg from '../../img/placeholder.png';
 
-export const UserList = () => {
+export const UserList = props => {
+  const { members, messages, users, loading, stateLoaded } = props;
+
+  useEffect(() => {
+    if (users.length && members.length && messages.length && loading) {
+      stateLoaded();
+    }
+    return;
+  }, [props]);
+  const lastMessage = messages.slice(-1)[0] || {};
+
   return (
     <Fragment>
       <div className='col s4 chat-contacts'>
         <div className='chat-contacts-scroll'>
           <ul className='collection'>
-            {/* <li className='collection-item avatar chat-contacts-user-card'>
-              <img src={placeholderImg} alt='' className='circle' />
-              <p className='title chat-contacts-title'>Kelsey Szukhent</p>
-              <p>
-                <span className='chat-contacts-current-user'>You: </span> Hey
-                there, this some test text...
-              </p>
-              <span className='secondary-content'>
-                <i>8:10 PM</i>
-              </span>
-            </li> */}
+            {!loading &&
+              users.map((user, i) => (
+                <div
+                  key={i}
+                  style={{
+                    border: 'solid .1rem rgba(0, 0, 0, .1)',
+                    paddingBottom: '.6rem'
+                  }}
+                >
+                  <UserCard user={user} lastMessage={lastMessage} />
+                </div>
+              ))}
           </ul>
         </div>
       </div>
@@ -27,8 +39,11 @@ export const UserList = () => {
   );
 };
 
-// const mapStateToProps = state => ({
-//   userCard: state.
-// })
+const mapStateToProps = state => ({
+  users: state.auth.users,
+  loading: state.auth.loading,
+  members: state.conversations.members,
+  messages: state.conversations.messages
+});
 
-export default UserList;
+export default connect(mapStateToProps, actionCreators)(UserList);

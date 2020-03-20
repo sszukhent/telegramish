@@ -3,6 +3,9 @@
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAIL = 'REGISTER_FAIL';
 export const USER_LOADED = 'USER_LOADED';
+export const GET_USERS_LIST = 'GET_USERS_LIST';
+export const STATE_LOADED = 'STATE_LOADED';
+export const LOAD_CONVERSATION = 'LOAD_CONVERSATION';
 export const AUTH_ERROR = 'AUTH_ERROR';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
@@ -12,5 +15,7 @@ export const PROFILE_ERROR = 'PROFILE_ERROR';
 export const CLEAR_PROFILE = 'CLEAR_PROFILE';
 export const SET_MESSAGE = 'SET_MESSAGE';
 export const SET_MESSAGES = 'SET_MESSAGES';
+export const SET_ROOM = 'SET_ROOM';
+export const SET_NAME = 'SET_NAME';
 export const ENDPOINT = 'http://localhost:5000';
 export const CHAT_ENDPOINT = 'http://localhost:5500';

@@ -2,32 +2,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ConversationSchema = new Schema({
-  members: [
-    {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'users'
-      }
-    }
-  ],
-  text: {
-    type: String
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'user'
   },
-  date: {
+  members: [{ type: Schema.Types.ObjectId, ref: 'user' }],
+  messages: [{ type: Schema.Types.ObjectId, ref: 'message' }],
+  created: {
     type: Date,
     default: Date.now
-  },
-  messages: [
-    {
-      text: {
-        type: String
-      },
-      created: {
-        type: Date,
-        default: Date.now
-      }
-    }
-  ]
+  }
 });
 
 module.exports = Conversation = mongoose.model(

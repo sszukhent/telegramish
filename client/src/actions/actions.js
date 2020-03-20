@@ -8,13 +8,74 @@ import {
   LOGIN_FAIL,
   USER_LOADED,
   AUTH_ERROR,
-  GET_PROFILE,
-  PROFILE_ERROR,
-  CLEAR_PROFILE,
+  SET_ROOM,
+  SET_NAME,
+  LOAD_CONVERSATION,
+  // PROFILE_ERROR,
+  // CLEAR_PROFILE,
   ENDPOINT,
-  LOGOUT
+  LOGOUT,
+  GET_USERS_LIST,
+  STATE_LOADED
 } from './constants';
 
+// Set Room
+export const setRoom = room => dispatch => {
+  dispatch({
+    type: SET_ROOM,
+    payload: room
+  });
+};
+
+// Set Name
+export const setName = name => dispatch => {
+  dispatch({
+    type: SET_NAME,
+    payload: name
+  });
+};
+
+// Load Conversation
+export const loadConvo = () => async dispatch => {
+  try {
+    const res = await axios.get(`${ENDPOINT}/api/conversations`);
+
+    dispatch({
+      type: LOAD_CONVERSATION,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: AUTH_ERROR
+    });
+  }
+};
+
+// Load Users List
+export const loadUsersList = () => async dispatch => {
+  try {
+    const res = await axios.get(`${ENDPOINT}/api/auth/all`);
+
+    dispatch({
+      type: GET_USERS_LIST,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: AUTH_ERROR,
+      payload: err
+    });
+  }
+};
+
+// User list loaded, stop loading
+export const stateLoaded = () => dispatch => {
+  dispatch({
+    type: STATE_LOADED
+  });
+};
+
+// Set current message to messages array
 export const setMessages = message => dispatch => {
   dispatch({
     type: SET_MESSAGES,
@@ -93,18 +154,6 @@ export const login = (email, password) => async dispatch => {
     });
   }
 };
-
-// // Create Profile
-// export const createProfile = () => async dispatch => {
-
-// }
-
-// // Load Profile
-// export const loadProfile = ({user, messages}) => async dispatch => {
-
-// }
-
-// Logout and clear profile
 
 export const logout = () => dispatch => {
   dispatch({

@@ -6,6 +6,7 @@ import '../Components.css';
 
 const Messages = props => {
   const { messages, messagesEndRef, name } = props;
+  console.log(messages);
 
   const scrollIntoView = require('scroll-into-view');
 
@@ -34,7 +35,7 @@ Messages.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  messages: state.profile.messages
+  messages: state.conversations.messages
 });
 
 export default connect(mapStateToProps)(Messages);

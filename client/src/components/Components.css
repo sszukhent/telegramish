@@ -36,7 +36,8 @@ body {
   margin-bottom: 0 !important;
 }
 #app-container {
-  max-width: 1200px;
+  /* Was 1200px */
+  max-width: 100%;
 }
 #chat-header-search {
   margin: 0.5rem 0 0 0;
