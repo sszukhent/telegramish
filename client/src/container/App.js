@@ -1,21 +1,55 @@
 import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import store from '../store';
+// import store from '../store';
 import Register from '../components/Auth/Register';
 import Login from '../components/Auth/Login';
 import PrivateRoute from '../components/routing/PrivateRoute';
 import Chat from '../components/Chat/Chat';
 import setAuthToken from '../utils/setAuthToken';
-import { loadUser } from '../actions/actions';
+import * as actionCreators from '../actions/actions';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
 
-const App = () => {
+const App = props => {
+  const { authState, loadUser, loadUsersList, authStateLoaded } = props;
+  // useEffect(() => {
+  //   store.dispatch(loadUser());
+  // }, []);
+
   useEffect(() => {
-    store.dispatch(loadUser());
-  }, []);
+    if (!authState.user && authState.users.length <= 0) {
+      loadUser();
+    } else if (
+      authState.user &&
+      authState.users.length <= 0 &&
+      authState.isAuthenticated
+    ) {
+      loadUsersList();
+    } else if (
+      authState.user &&
+      authState.users.length > 0 &&
+      authState.isAuthenticated
+    ) {
+      authStateLoaded();
+    } else if (!authState.isAuthenticated) {
+      console.log('Logged out');
+      return;
+    }
+
+    return;
+  }, [authState.user.name, authState.users.length]);
+
+  console.log(authState.user, authState.users.length);
+
+  // useEffect(() => {
+  //   if (authState.users.length && authState.user.length) {
+  //     authStateLoaded();
+  //   }
+  //   return;
+  // }, []);
 
   return (
     <Router>
@@ -28,4 +62,8 @@ const App = () => {
   );
 };
 
-export default App;
+const mapStateToProps = state => ({
+  authState: state.auth
+});
+
+export default connect(mapStateToProps, actionCreators)(App);

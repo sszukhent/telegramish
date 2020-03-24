@@ -11,12 +11,13 @@ import {
   SET_ROOM,
   SET_NAME,
   LOAD_CONVERSATION,
-  // PROFILE_ERROR,
-  // CLEAR_PROFILE,
+  ENTER_CONVERSATION,
+  CONVERSATION_ERROR,
   ENDPOINT,
   LOGOUT,
   GET_USERS_LIST,
-  STATE_LOADED
+  AUTH_STATE_LOADED,
+  CONVO_STATE_LOADED
 } from './constants';
 
 // Set Room
@@ -51,6 +52,20 @@ export const loadConvo = () => async dispatch => {
   }
 };
 
+// Enter new conversation
+export const enterConvo = () => dispatch => {
+  try {
+    dispatch({
+      type: ENTER_CONVERSATION
+    });
+  } catch (err) {
+    dispatch({
+      type: CONVERSATION_ERROR,
+      payload: err
+    });
+  }
+};
+
 // Load Users List
 export const loadUsersList = () => async dispatch => {
   try {
@@ -68,10 +83,16 @@ export const loadUsersList = () => async dispatch => {
   }
 };
 
-// User list loaded, stop loading
-export const stateLoaded = () => dispatch => {
+// State loaded
+export const authStateLoaded = () => dispatch => {
   dispatch({
-    type: STATE_LOADED
+    type: AUTH_STATE_LOADED
+  });
+};
+
+export const convoStateLoaded = () => dispatch => {
+  dispatch({
+    type: CONVO_STATE_LOADED
   });
 };
 

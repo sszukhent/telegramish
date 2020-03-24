@@ -37,7 +37,7 @@ router.get('/', auth, async (req, res) => {
 
     if (!conversation.length) {
       return res
-        .status(400)
+        .status(200)
         .json({ msg: 'There are no conversationss under this user' });
     } else {
       res.json(conversation);

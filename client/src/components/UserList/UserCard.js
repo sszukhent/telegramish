@@ -1,13 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+// import PropTypes from 'prop-types';
 import placeholderImg from '../../img/placeholder.png';
 
 const UserCard = props => {
   const {
+    currUser,
     lastMessage: { text, created },
-    user: { name }
+    listUser: { _id, name }
   } = props;
-  const timestamp = Date.parse(created); // This would be the timestamp you want to format
+  const timestamp = !created ? '' : Date.parse(created); // This would be the timestamp you want to format
 
   const currTime = new Intl.DateTimeFormat('en-US', {
     hour: '2-digit',
@@ -16,10 +18,22 @@ const UserCard = props => {
 
   // Trim the string for preview text
   const previewLength = 30;
-  const previewText = text.substring(0, previewLength);
+  const previewText = !text
+    ? 'No conversations with this user'
+    : text.substring(0, previewLength);
 
   return (
-    <div className='collection-item avatar chat-contacts-user-card'>
+    <div
+      id={_id}
+      className='collection-item avatar chat-contacts-user-card'
+      onClick={() =>
+        console.log(
+          'Current contact id: ' + _id,
+          'and',
+          'Current user id: ' + currUser._id
+        )
+      }
+    >
       <img src={placeholderImg} alt='' className='circle' />
       <p className='title chat-contacts-title'>{name}</p>
       <p>
@@ -35,4 +49,8 @@ const UserCard = props => {
 
 UserCard.propTypes = {};
 
-export default UserCard;
+const mapStateToProps = state => ({
+  currUser: state.auth.user
+});
+
+export default connect(mapStateToProps)(UserCard);

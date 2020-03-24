@@ -1,18 +1,21 @@
 import {
-  GET_PROFILE,
+  // GET_PROFILE,
   LOAD_CONVERSATION,
   PROFILE_ERROR,
-  CLEAR_PROFILE,
-  USERS_LIST,
+  // CLEAR_PROFILE,
+  // USERS_LIST,
   SET_ROOM,
-  SET_NAME
+  SET_NAME,
+  CONVO_STATE_LOADED,
+  LOGOUT
 } from '../actions/constants';
 
 const initialState = {
   members: [],
   messages: [],
   room: '',
-  loading: true,
+  name: '',
+  convoStateLoading: true,
   error: {}
 };
 
@@ -20,12 +23,12 @@ export default function(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case GET_PROFILE:
-      return {
-        ...state,
-        profile: payload,
-        loading: false
-      };
+    // case GET_PROFILE:
+    //   return {
+    //     ...state,
+    //     profile: payload,
+    //     loading: true
+    //   };
     case SET_ROOM:
       return { ...state, room: payload };
     case SET_NAME:
@@ -37,20 +40,29 @@ export default function(state = initialState, action) {
       return {
         ...state,
         members: members,
-        messages: messages
+        messages: messages,
+        convoStateLoading: true
+      };
+    case CONVO_STATE_LOADED:
+      return {
+        ...state,
+        convoStateLoading: false
       };
     case PROFILE_ERROR:
       return {
         ...state,
         error: payload,
-        loading: false
+        convoStateLoading: false
       };
-    case CLEAR_PROFILE:
+    case LOGOUT:
       return {
         ...state,
-        profile: null,
+        members: [],
         messages: [],
-        loading: false
+        room: '',
+        name: '',
+        convoStateLoading: false,
+        error: {}
       };
 
     default:

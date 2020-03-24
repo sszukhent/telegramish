@@ -7,13 +7,13 @@ import {
   LOGIN_SUCCESS,
   LOGOUT,
   GET_USERS_LIST,
-  STATE_LOADED
+  AUTH_STATE_LOADED
 } from '../actions/constants';
 
 const initialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: null,
-  loading: true,
+  authStateLoading: true,
   user: {},
   users: []
 };
@@ -31,13 +31,13 @@ export default function(state = initialState, action) {
     case GET_USERS_LIST:
       return {
         ...state,
-        loading: true,
+        authStateLoading: true,
         users: payload
       };
-    case STATE_LOADED:
+    case AUTH_STATE_LOADED:
       return {
         ...state,
-        loading: false
+        authStateLoading: false
       };
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
@@ -46,7 +46,7 @@ export default function(state = initialState, action) {
         ...state,
         ...payload,
         isAuthenticated: true,
-        loading: true
+        authStateLoading: true
       };
     case LOGIN_FAIL:
     case REGISTER_FAIL:
@@ -57,7 +57,9 @@ export default function(state = initialState, action) {
         ...state,
         token: null,
         isAuthenticated: false,
-        loading: false
+        authStateLoading: false,
+        user: {},
+        users: []
       };
     default:
       return state;
