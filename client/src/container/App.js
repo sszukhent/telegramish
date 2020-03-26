@@ -14,7 +14,15 @@ if (localStorage.token) {
 }
 
 const App = props => {
-  const { authState, loadUser, loadUsersList, authStateLoaded } = props;
+  const {
+    authState,
+    convoState,
+    loadUser,
+    loadUsersList,
+    loadConvo,
+    authStateLoaded,
+    convoStateLoaded
+  } = props;
   // useEffect(() => {
   //   store.dispatch(loadUser());
   // }, []);
@@ -31,16 +39,29 @@ const App = props => {
     } else if (
       authState.user &&
       authState.users.length > 0 &&
+      convoState.currentConversations.length <= 0 &&
+      authState.isAuthenticated
+    ) {
+      loadConvo();
+    } else if (
+      authState.user &&
+      authState.users.length > 0 &&
+      convoState.currentConversations.length > 0 &&
       authState.isAuthenticated
     ) {
       authStateLoaded();
+      convoStateLoaded();
     } else if (!authState.isAuthenticated) {
       console.log('Logged out');
       return;
     }
 
     return;
-  }, [authState.user.name, authState.users.length]);
+  }, [
+    authState.user.name,
+    authState.users.length,
+    convoState.currentConversations.length
+  ]);
 
   console.log(authState.user, authState.users.length);
 
@@ -63,7 +84,8 @@ const App = props => {
 };
 
 const mapStateToProps = state => ({
-  authState: state.auth
+  authState: state.auth,
+  convoState: state.conversations
 });
 
 export default connect(mapStateToProps, actionCreators)(App);

@@ -2,21 +2,29 @@ import React from 'react';
 import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 import placeholderImg from '../../img/placeholder.png';
+import * as actionCreators from '../../actions/actions';
 
 const UserCard = props => {
   const {
     currUser,
-    lastMessage: { text, created },
-    listUser: { _id, name }
+    // lastMessage: { text, created },
+    conversation: {
+      _id,
+      user: { name },
+      selected
+    },
+    enterConvo
   } = props;
-  const timestamp = !created ? '' : Date.parse(created); // This would be the timestamp you want to format
+  let text;
+  // const timestamp = !created ? '' : Date.parse(created); // This would be the timestamp you want to format
 
-  const currTime = new Intl.DateTimeFormat('en-US', {
-    hour: '2-digit',
-    minute: '2-digit'
-  }).format(timestamp);
+  // const currTime = new Intl.DateTimeFormat('en-US', {
+  //   hour: '2-digit',
+  //   minute: '2-digit'
+  // }).format(timestamp);
 
   // Trim the string for preview text
+  console.log(_id, selected);
   const previewLength = 30;
   const previewText = !text
     ? 'No conversations with this user'
@@ -26,13 +34,7 @@ const UserCard = props => {
     <div
       id={_id}
       className='collection-item avatar chat-contacts-user-card'
-      onClick={() =>
-        console.log(
-          'Current contact id: ' + _id,
-          'and',
-          'Current user id: ' + currUser._id
-        )
-      }
+      onClick={() => enterConvo(_id)}
     >
       <img src={placeholderImg} alt='' className='circle' />
       <p className='title chat-contacts-title'>{name}</p>
@@ -41,16 +43,14 @@ const UserCard = props => {
         {`${previewText}...`}
       </p>
       <span className='secondary-content'>
-        <i>{currTime}</i>
+        <i>{'currTime'}</i>
       </span>
     </div>
   );
 };
 
-UserCard.propTypes = {};
-
 const mapStateToProps = state => ({
   currUser: state.auth.user
 });
 
-export default connect(mapStateToProps)(UserCard);
+export default connect(mapStateToProps, actionCreators)(UserCard);

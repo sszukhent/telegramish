@@ -1,29 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import Message from '../Message/Message';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import '../Components.css';
 
 const Messages = props => {
-  const { messages, messagesEndRef, name } = props;
-  console.log(messages);
+  const { messagesEndRef, name, currentConversations } = props;
 
-  const scrollIntoView = require('scroll-into-view');
+  const selectedConversation = currentConversations.filter(
+    conversation => conversation.selected === true
+  );
 
-  scrollIntoView(messagesEndRef, { behavior: 'smooth' });
-
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, [messages]);
-
-  return (
+  return selectedConversation.length > 0 ? (
     <div className='col s8 chat-feed'>
       <div id='chat-feed-container'>
-        {messages.map((message, i) => (
+        {selectedConversation[0].messages.map((message, i) => (
           <div key={i}>
             <Message message={message} name={name} />
           </div>
         ))}
+
+        <div ref={messagesEndRef} />
+      </div>
+    </div>
+  ) : (
+    <div className='col s8 chat-feed'>
+      <div id='chat-feed-container'>
+        <div className='container'>
+          <h3>Nothing here yet!</h3>
+        </div>
+
         <div ref={messagesEndRef} />
       </div>
     </div>
@@ -35,7 +41,7 @@ Messages.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  messages: state.conversations.messages
+  currentConversations: state.conversations.currentConversations
 });
 
 export default connect(mapStateToProps)(Messages);

@@ -5,23 +5,26 @@ import * as actionCreators from '../../actions/actions';
 import '../Components.css';
 
 export const UserList = props => {
-  const { messages, users, loading, currUser } = props;
+  const { conversations, currUser } = props;
 
   console.log(currUser);
+  console.log(conversations);
 
   // Remove the current logged in user from the contact list
-  const usersList = users.filter(user => user._id !== currUser._id);
+  const conversationsList = conversations.filter(
+    currConversation => currConversation.user._id !== currUser._id
+  );
 
-  console.log(usersList);
+  console.log(conversationsList);
 
-  const lastMessage = messages.slice(-1)[0] || {};
+  // const lastMessage = messages.slice(-1)[0] || {};
 
-  return !loading ? (
+  return (
     <Fragment>
       <div className='col s4 chat-contacts'>
         <div className='chat-contacts-scroll'>
           <ul className='collection'>
-            {usersList.map((listUser, i) => (
+            {conversationsList.map((conversation, i) => (
               <div
                 key={i}
                 style={{
@@ -29,28 +32,23 @@ export const UserList = props => {
                   paddingBottom: '.6rem'
                 }}
               >
-                <UserCard
-                  loading={loading}
-                  listUser={listUser}
-                  lastMessage={lastMessage}
-                />
+                <UserCard conversation={conversation} />
               </div>
             ))}
           </ul>
         </div>
       </div>
     </Fragment>
-  ) : (
-    <div>Loading..</div>
   );
 };
 
 const mapStateToProps = state => ({
   currUser: state.auth.user,
   users: state.auth.users,
-  members: state.conversations.members,
-  messages: state.conversations.messages,
-  loading: state.auth.loading
+  conversations: state.conversations.currentConversations
+  // members: state.conversations.currentConversations[0].members,
+  // messages: state.conversations.currentConversations[0].messages,
+  // loading: state.auth.loading
 });
 
 export default connect(mapStateToProps, actionCreators)(UserList);

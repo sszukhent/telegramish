@@ -6,15 +6,15 @@ const Conversation = require('../../models/Conversation');
 const User = require('../../models/User');
 
 // @route GET api/conversations
-// @desc Get current users profile
+// @desc Get current users conversations
 // @access Private
 router.get('/', auth, async (req, res) => {
   try {
-    const conversation = await Conversation.find({ user: req.user.id })
+    const conversation = await Conversation.find({ members: req.user.id })
       .populate([
         {
           path: 'user',
-          select: 'name -_id'
+          select: 'name'
         },
         {
           path: 'members',
@@ -96,7 +96,7 @@ router.post('/', auth, async (req, res) => {
 // @route GET api/conversations
 // @desc Get all conversations
 // @access Public
-router.get('/', async (req, res) => {
+router.get('/all', async (req, res) => {
   try {
     const conversations = await Conversation.find();
     res.json(conversations);

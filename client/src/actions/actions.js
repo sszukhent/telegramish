@@ -17,7 +17,8 @@ import {
   LOGOUT,
   GET_USERS_LIST,
   AUTH_STATE_LOADED,
-  CONVO_STATE_LOADED
+  CONVO_STATE_LOADED,
+  NEW_CONVO
 } from './constants';
 
 // Set Room
@@ -34,6 +35,21 @@ export const setName = name => dispatch => {
     type: SET_NAME,
     payload: name
   });
+};
+
+// Create new conversation
+export const newConvo = newFriend => async dispatch => {
+  try {
+    dispatch({
+      type: NEW_CONVO,
+      payload: newFriend
+    });
+  } catch (err) {
+    dispatch({
+      type: AUTH_ERROR,
+      payload: err
+    });
+  }
 };
 
 // Load Conversation
@@ -53,10 +69,11 @@ export const loadConvo = () => async dispatch => {
 };
 
 // Enter new conversation
-export const enterConvo = () => dispatch => {
+export const enterConvo = convo_id => dispatch => {
   try {
     dispatch({
-      type: ENTER_CONVERSATION
+      type: ENTER_CONVERSATION,
+      payload: convo_id
     });
   } catch (err) {
     dispatch({

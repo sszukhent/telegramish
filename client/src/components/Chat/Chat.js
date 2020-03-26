@@ -9,7 +9,7 @@ import Search from '../Search/Search';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actions';
 import { ENDPOINT } from '../../actions/constants';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import '../Components.css';
 
 let socket;
@@ -80,11 +80,6 @@ const Chat = props => {
       </div>
     </Fragment>
   );
-};
-
-Chat.propTypes = {
-  messages: PropTypes.array.isRequired,
-  setMessages: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

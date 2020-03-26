@@ -11,6 +11,10 @@ const ConversationSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
+  },
+  selected: {
+    type: Boolean,
+    default: false
   }
 });
 
