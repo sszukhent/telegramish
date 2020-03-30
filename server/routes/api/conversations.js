@@ -36,9 +36,10 @@ router.get('/', auth, async (req, res) => {
       });
 
     if (!conversation.length) {
-      return res
-        .status(200)
-        .json({ msg: 'There are no conversationss under this user' });
+      return res.status(200).json({
+        msg:
+          "There are no conversations yet. Click 'New Conversation' to start chatting!"
+      });
     } else {
       res.json(conversation);
     }
@@ -70,7 +71,7 @@ router.post('/', auth, async (req, res) => {
   console.log('Sent');
 
   try {
-    let conversation = await Conversation.findOne({ user: req.user.id });
+    let conversation = await Conversation.findOne({ _id: req.id });
 
     if (conversation) {
       // Update

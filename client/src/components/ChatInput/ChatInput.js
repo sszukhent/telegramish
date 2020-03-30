@@ -15,7 +15,8 @@ const ChatInput = ({
   logout,
   currentUser,
   users,
-  newConvo
+  newConvo,
+  roomId
 }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -55,6 +56,7 @@ const ChatInput = ({
           </div>
         </div>
       </div>
+      {/* Start Chat input section */}
       <div className='col s8'>
         <div className='row no-mp'>
           <div id='upload-btn' className='col s1'>
@@ -68,7 +70,9 @@ const ChatInput = ({
               value={message}
               onChange={({ target: { value } }) => setMessage(value)}
               onKeyPress={event =>
-                event.key === 'Enter' ? sendMessage(event) : null
+                event.key === 'Enter'
+                  ? sendMessage({ roomId, message }) && setMessage('')
+                  : null
               }
             />
           </div>
@@ -83,10 +87,30 @@ const ChatInput = ({
       {/* Modal for adding new conversation */}
       <Modal isOpen={modalIsOpen}>
         <div className='container bootstrap snippet'>
-          <h4>
-            <i class='small material-icons'>person_add</i> New Conversation
-          </h4>
-          <p>Click 'Add User' to start a new chat.</p>
+          <div className='row'>
+            <div className='col s7'>
+              <h4>
+                <i class='small material-icons'>person_add</i> New Conversation
+              </h4>
+            </div>
+
+            <div className='col s2 offset-s3' style={{ marginTop: '1rem' }}>
+              <button
+                className='btn-floating btn-large waves-effect waves-light red'
+                onClick={() => {
+                  setModalIsOpen(false);
+                }}
+              >
+                <i class='material-icons'>close</i>
+              </button>
+            </div>
+          </div>
+          <div className='row'>
+            <div className='col s5' style={{ marginTop: '-1.5rem' }}>
+              <p>Click 'Add User' to start a new chat.</p>
+            </div>
+          </div>
+
           <div className='row'>
             <div className='col-lg-12'>
               <div className='main-box no-header clearfix'>
@@ -138,7 +162,19 @@ const ChatInput = ({
                               <a href='#'>{listUser.email}</a>
                             </td>
                             <td style={{ width: '20%' }}>
-                              <button className='btn'>Add User</button>
+                              <button
+                                className='btn'
+                                onClick={() => {
+                                  newConvo(
+                                    {
+                                      members: `${currentUser._id}, ${listUser._id}`
+                                    },
+                                    setModalIsOpen(false)
+                                  );
+                                }}
+                              >
+                                Add User
+                              </button>
                             </td>
                           </tr>
                         ))}
@@ -149,14 +185,6 @@ const ChatInput = ({
               </div>
             </div>
           </div>
-          <button
-            className='waves-effect waves-light btn red'
-            onClick={() => {
-              setModalIsOpen(false);
-            }}
-          >
-            Close
-          </button>
         </div>
       </Modal>
     </div>
@@ -165,7 +193,8 @@ const ChatInput = ({
 
 const mapStateToProps = state => ({
   currentUser: state.auth.user,
-  users: state.auth.users
+  users: state.auth.users,
+  roomId: state.chat.roomId
 });
 
 export default connect(mapStateToProps, actionCreators)(ChatInput);

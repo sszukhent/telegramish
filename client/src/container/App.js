@@ -46,10 +46,10 @@ const App = props => {
     } else if (
       authState.user &&
       authState.users.length > 0 &&
-      convoState.currentConversations.length > 0 &&
       authState.isAuthenticated
     ) {
       authStateLoaded();
+    } else if (convoState.currentConversations.length > 0) {
       convoStateLoaded();
     } else if (!authState.isAuthenticated) {
       console.log('Logged out');
@@ -60,7 +60,7 @@ const App = props => {
   }, [
     authState.user.name,
     authState.users.length,
-    convoState.currentConversations.length
+    convoState.currentConversations
   ]);
 
   console.log(authState.user, authState.users.length);

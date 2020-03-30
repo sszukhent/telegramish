@@ -5,18 +5,20 @@ import PropTypes from 'prop-types';
 import '../Components.css';
 
 const Messages = props => {
-  const { messagesEndRef, name, currentConversations } = props;
-
-  const selectedConversation = currentConversations.filter(
-    conversation => conversation.selected === true
-  );
-
+  const { messagesEndRef, currentConversations } = props;
+  const selectedConversation =
+    currentConversations.length > 0
+      ? currentConversations.filter(
+          currConversation => currConversation.selected === true
+        )
+      : [];
+  console.log(selectedConversation);
   return selectedConversation.length > 0 ? (
     <div className='col s8 chat-feed'>
       <div id='chat-feed-container'>
         {selectedConversation[0].messages.map((message, i) => (
           <div key={i}>
-            <Message message={message} name={name} />
+            <Message message={message} />
           </div>
         ))}
 
@@ -26,9 +28,7 @@ const Messages = props => {
   ) : (
     <div className='col s8 chat-feed'>
       <div id='chat-feed-container'>
-        <div className='container'>
-          <h3>Nothing here yet!</h3>
-        </div>
+        <h6>No messages yet!</h6>
 
         <div ref={messagesEndRef} />
       </div>

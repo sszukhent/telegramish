@@ -9,49 +9,35 @@ import Search from '../Search/Search';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actions';
 import { ENDPOINT } from '../../actions/constants';
+import messageFormat from './MessageFormat';
 // import PropTypes from 'prop-types';
 import '../Components.css';
-
-let socket;
+const socket = io(ENDPOINT, {
+  transports: ['websocket', 'polling']
+});
 
 const Chat = props => {
-  const { setName, setRoom, setMessages, messages } = props;
-  // const [name, setName] = useState('');
-  // const [room, setRoom] = useState('');
+  const { name, roomId, setMessages } = props;
   const [message, setMessage] = useState('');
   const messagesEndRef = React.createRef();
-  const name = 'Sean';
-  const room = 'Test Room';
+  console.log(roomId);
+  // console.log(io);
 
+  // Join the room
   useEffect(() => {
-    setName(name);
-    setRoom(room);
-
-    socket = io(ENDPOINT);
-
-    socket.emit('join', { name, room }, () => {});
-  }, [ENDPOINT]);
-
-  useEffect(() => {
-    socket.on('message', message => {
-      setMessages([...messages, message]);
-    });
-
     return () => {
-      socket.emit('disconnect');
+      socket.emit('disconnect', name);
 
       socket.off();
     };
-  }, [messages]);
+  }, []);
 
-  // Sending messages
-  const sendMessage = event => {
-    event.preventDefault();
-
-    if (message) {
-      socket.emit('sendMessage', message, () => setMessage(''));
-    }
-  };
+  // Set messages
+  useEffect(() => {
+    socket.on('message', message => {
+      setMessages(messageFormat(name, message));
+    });
+  }, [socket]);
 
   return (
     <Fragment>
@@ -61,7 +47,7 @@ const Chat = props => {
           <div className='row app-header' style={{ margin: '0 auto' }}>
             <Search />
 
-            <RoomHeader room={room} />
+            <RoomHeader />
           </div>
 
           <div
@@ -69,11 +55,11 @@ const Chat = props => {
             style={{ minHeight: '82vh', margin: '0 auto' }}
           >
             <UserList />
-            <Messages messagesEndRef={messagesEndRef} name={name} />
+            <Messages messagesEndRef={messagesEndRef} />
             <ChatInput
               message={message}
               setMessage={setMessage}
-              sendMessage={sendMessage}
+              // sendMessage={sendMessage}
             />
           </div>
         </div>
@@ -86,9 +72,10 @@ const mapStateToProps = state => ({
   messages: state.conversations.messages,
   users: state.auth.users,
   members: state.conversations.members,
-  loading: state.auth.loading
-  // name: state.auth.user.name,
-  // room: state.auth.room
+  loading: state.auth.loading,
+  name: state.chat.name,
+  roomId: state.chat.roomId,
+  currentConversations: state.currentConversations
 });
 
 export default connect(mapStateToProps, actionCreators)(Chat);

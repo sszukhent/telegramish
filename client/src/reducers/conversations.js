@@ -1,19 +1,17 @@
 import {
   LOAD_CONVERSATION,
-  PROFILE_ERROR,
-  SET_ROOM,
-  SET_NAME,
+  CONVERSATION_ERROR,
   CONVO_STATE_LOADED,
-  ENTER_CONVERSATION,
-  LOGOUT
+  SELECT_CONVERSATION,
+  DESELECT_CONVERSATION,
+  SET_MESSAGES,
+  LOGOUT,
+  NEW_CONVO
 } from '../actions/constants';
 
 const initialState = {
   currentConversations: [],
-  // messages: [],
-  // room: '',
-  // name: '',
-  convoStateLoading: true,
+  convoStateLoading: false,
   error: {}
 };
 
@@ -27,12 +25,20 @@ export default function(state = initialState, action) {
     //     profile: payload,
     //     loading: true
     //   };
-    case SET_ROOM:
-      return { ...state, room: payload };
-    case SET_NAME:
-      return { ...state, name: payload };
-    // case SET_MESSAGES:
-    //   return { ...state, messages: payload };
+    case SET_MESSAGES:
+      console.log(payload.roomId);
+      return {
+        ...state,
+        messages: state.currentConversations
+          .find(x => x._id === payload.roomId)
+          .messages.push(payload.message)
+      };
+    case NEW_CONVO:
+      return {
+        ...state,
+        convoStateLoading: false
+      };
+
     case LOAD_CONVERSATION:
       // const { members, messages } = payload[0];
       return {
@@ -45,7 +51,7 @@ export default function(state = initialState, action) {
         ...state,
         convoStateLoading: false
       };
-    case ENTER_CONVERSATION:
+    case SELECT_CONVERSATION:
       // console.log(
       //   state.currentConversations.find(x => x._id === payload).selected
       // );
@@ -55,7 +61,17 @@ export default function(state = initialState, action) {
           x => x._id === payload
         ).selected = true)
       };
-    case PROFILE_ERROR:
+    case DESELECT_CONVERSATION:
+      // console.log(
+      //   state.currentConversations.find(x => x._id === payload).selected
+      // );
+      return {
+        ...state,
+        selected: (state.currentConversations.find(
+          x => x.selected === true
+        ).selected = false)
+      };
+    case CONVERSATION_ERROR:
       return {
         ...state,
         error: payload,
@@ -65,9 +81,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         currentConversations: [],
-        // messages: [],
-        // room: '',
-        // name: '',
         convoStateLoading: false,
         error: {}
       };

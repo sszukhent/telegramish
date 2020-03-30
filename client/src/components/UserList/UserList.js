@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import UserCard from '../UserList/UserCard';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actions';
@@ -7,19 +7,18 @@ import '../Components.css';
 export const UserList = props => {
   const { conversations, currUser } = props;
 
-  console.log(currUser);
-  console.log(conversations);
-
-  // Remove the current logged in user from the contact list
-  const conversationsList = conversations.filter(
-    currConversation => currConversation.user._id !== currUser._id
-  );
+  const conversationsList =
+    conversations.length > 0
+      ? conversations.filter(currConversation =>
+          currConversation.members.find(member => member._id === currUser._id)
+        )
+      : [];
 
   console.log(conversationsList);
 
   // const lastMessage = messages.slice(-1)[0] || {};
 
-  return (
+  return conversationsList.length > 0 ? (
     <Fragment>
       <div className='col s4 chat-contacts'>
         <div className='chat-contacts-scroll'>
@@ -36,6 +35,16 @@ export const UserList = props => {
               </div>
             ))}
           </ul>
+        </div>
+      </div>
+    </Fragment>
+  ) : (
+    <Fragment>
+      <div className='col s4 chat-contacts'>
+        <div className='chat-contacts-scroll'>
+          <div>
+            <p>{conversations.msg}</p>
+          </div>
         </div>
       </div>
     </Fragment>

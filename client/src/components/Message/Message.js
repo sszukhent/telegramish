@@ -1,16 +1,18 @@
 import React from 'react';
 import ReactEmoji from 'react-emoji';
+import { connect } from 'react-redux';
 
 import '../Components.css';
 
 export const Message = ({
+  currUserName,
   message: {
     text,
     user: { name },
     created
   }
 }) => {
-  let isSentByCurrentUser = false;
+  let isSentByCurrentUser = name === currUserName;
 
   const trimmedName = name.trim().toLowerCase();
 
@@ -24,7 +26,6 @@ export const Message = ({
   if (name === trimmedName) {
     isSentByCurrentUser = true;
   }
-
   return isSentByCurrentUser ? (
     <div id='speech-bubble-user' className='col s8 offset-s4'>
       <h6 className='speech-bubble-name'>
@@ -44,4 +45,8 @@ export const Message = ({
   );
 };
 
-export default Message;
+const mapStateToProps = state => ({
+  currUserName: state.auth.user.name
+});
+
+export default connect(mapStateToProps)(Message);

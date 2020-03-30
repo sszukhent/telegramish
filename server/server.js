@@ -4,15 +4,16 @@ const connectDB = require('./config/db');
 const http = require('http');
 const socketio = require('socket.io');
 
-const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
-
+const messageFormat = require('../client/src/components/Chat/MessageFormat');
 const PORT = process.env.PORT || 5000;
 
 const router = require('./router');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server);
+const io = socketio(server, {
+  transports: ['websocket', 'polling']
+});
 
 // Connect to DB
 connectDB();
@@ -29,48 +30,30 @@ app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/conversations', require('./routes/api/conversations'));
 app.use('/api/messages', require('./routes/api/messages'));
 
-// io.on('connection', socket => {
-//   socket.on('chat', ({ name, room }, callback) => {
-//     const { error, user } = addUser({ id: socket.id, name, room });
+// Run when client connects
+io.on('connection', socket => {
+  socket.on('join', (user, roomId, callback) => {
+    console.log('Join room: ' + user.name, roomId);
+    // Join the room
+    socket.join(roomId, () => {
+      // Send welcome message as test
+      socket.broadcast
+        .to(roomId)
+        .emit('message', `${user.name} has joined the room!`);
+    });
+  });
 
-//     if (error) return callback(error);
+  socket.on('sendMessage', ({ roomId, message }, callback) => {
+    socket.to(roomId).emit('message', message);
 
-//     socket.emit('message', {
-//       user: 'admin',
-//       text: `${user.name}, welcome to the room ${user.room}`
-//     });
-//     socket.broadcast
-//       .to(user.room)
-//       .emit('message', { user: 'admin', text: `${user.name}, has joined!` });
+    console.log('Send Message: ' + roomId, message);
+  });
 
-//     socket.join(user.room);
-
-//     callback();
-//   });
-
-//   socket.on('sendMessage', (message, callback) => {
-//     const user = getUser(socket.id);
-
-//     io.to(user.room).emit('message', { user: user.name, text: message });
-
-//     callback();
-//   });
-
-//   socket.on('disconnect', () => {
-//     const user = removeUser(socket.id);
-
-//     if (user) {
-//       io.to(user.room).emit('message', {
-//         user: 'Admin',
-//         text: `${user.name} has left.`
-//       });
-//       io.to(user.room).emit('roomData', {
-//         room: user.room,
-//         users: getUsersInRoom(user.room)
-//       });
-//     }
-//   });
-// });
+  //  Run when client disconnects
+  socket.on('disconnect', () => {
+    io.emit('message', `${socket.id} has left the chat.`);
+  });
+});
 
 app.use(router);
 

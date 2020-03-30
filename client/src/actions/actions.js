@@ -1,17 +1,22 @@
 import axios from 'axios';
+import io from 'socket.io-client';
 import setAuthToken from '../utils/setAuthToken';
 import {
+  JOIN_ROOM,
   SET_MESSAGES,
+  SEND_MESSAGE,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   USER_LOADED,
   AUTH_ERROR,
-  SET_ROOM,
+  SET_ROOM_ID,
+  SET_ROOM_NAME,
   SET_NAME,
   LOAD_CONVERSATION,
-  ENTER_CONVERSATION,
+  SELECT_CONVERSATION,
+  DESELECT_CONVERSATION,
   CONVERSATION_ERROR,
   ENDPOINT,
   LOGOUT,
@@ -21,11 +26,20 @@ import {
   NEW_CONVO
 } from './constants';
 
+const socket = io(ENDPOINT);
+
 // Set Room
-export const setRoom = room => dispatch => {
+export const setRoom = (id, members) => dispatch => {
+  const memberNames = members.map(member => member.name.split(' ')[0]);
+  console.log(memberNames);
+
   dispatch({
-    type: SET_ROOM,
-    payload: room
+    type: SET_ROOM_ID,
+    payload: id
+  });
+  dispatch({
+    type: SET_ROOM_NAME,
+    payload: memberNames
   });
 };
 
@@ -38,12 +52,24 @@ export const setName = name => dispatch => {
 };
 
 // Create new conversation
-export const newConvo = newFriend => async dispatch => {
+export const newConvo = members => async dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+
   try {
+    const res = await axios.post(
+      `${ENDPOINT}/api/conversations`,
+      members,
+      config
+    );
+
     dispatch({
-      type: NEW_CONVO,
-      payload: newFriend
+      type: NEW_CONVO
     });
+    dispatch(loadConvo());
   } catch (err) {
     dispatch({
       type: AUTH_ERROR,
@@ -68,14 +94,45 @@ export const loadConvo = () => async dispatch => {
   }
 };
 
-// Enter new conversation
-export const enterConvo = convo_id => dispatch => {
+// Select conversation
+export const selectConvo = (convo_id, name) => async (dispatch, state) => {
+  // console.log(state().conversations.currentConversations);
   try {
-    dispatch({
-      type: ENTER_CONVERSATION,
-      payload: convo_id
-    });
+    // Change Conversation:
+    // Check if the user clicked on a new conversation. If so, deselect any other conversations and then select the new conversation.
+    if (
+      state().conversations.currentConversations.find(
+        x => x.selected === true
+      ) &&
+      state().conversations.currentConversations.find(
+        x => x.selected === true
+      ) !==
+        state().conversations.currentConversations.find(x => x._id === convo_id)
+    ) {
+      dispatch({
+        type: DESELECT_CONVERSATION
+      });
+      dispatch({
+        type: SELECT_CONVERSATION,
+        payload: convo_id
+      });
+    }
+    // The user is deselecting the currently selected conversation.
+    else if (
+      state().conversations.currentConversations.find(x => x._id === convo_id)
+        .selected === true
+    ) {
+      return;
+    }
+    // There are no other selected conversations. The user is selecting a new conversation.
+    else {
+      dispatch({
+        type: SELECT_CONVERSATION,
+        payload: convo_id
+      });
+    }
   } catch (err) {
+    console.log(err);
     dispatch({
       type: CONVERSATION_ERROR,
       payload: err
@@ -114,10 +171,10 @@ export const convoStateLoaded = () => dispatch => {
 };
 
 // Set current message to messages array
-export const setMessages = message => dispatch => {
+export const setMessages = message => (dispatch, state) => {
   dispatch({
     type: SET_MESSAGES,
-    payload: message
+    payload: { roomId: state().chat.roomId, message }
   });
 };
 
@@ -198,3 +255,25 @@ export const logout = () => dispatch => {
     type: LOGOUT
   });
 };
+
+// Sockets actions
+export const joinRoom = (user, roomId) => async dispatch => {
+  // const { name } = user.name;
+  console.log(user.name, roomId);
+
+  socket.emit('join', user, roomId);
+  dispatch({
+    type: JOIN_ROOM
+  });
+};
+
+export const sendMessage = ({ roomId, message }) => async dispatch => {
+  socket.emit('sendMessage', { roomId, message });
+  dispatch({
+    type: SEND_MESSAGE
+  });
+};
+
+// export const messageReceived = ({roomId, message}) => async dispatch => {
+//   socket.emit('sendMessage', { roomId, message }, setMessage(''));
+// }

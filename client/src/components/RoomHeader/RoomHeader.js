@@ -1,14 +1,19 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 
 import '../Components.css';
 
-export const RoomHeader = users => {
+export const RoomHeader = props => {
+  const { roomMembers } = props;
+
   return (
     <Fragment>
       <div className='col s8 '>
         <div id='chat-header-current'>
           <div className='row no-margin'>
-            <span className='flow-text'>{users.room}</span>
+            <span className='flow-text'>
+              {roomMembers.toString().replace(',', ', ')}
+            </span>
             {/* <span className='col s2 offset-s10'>Logout</span> */}
           </div>
           <div className='row no-margin'>
@@ -20,4 +25,8 @@ export const RoomHeader = users => {
   );
 };
 
-export default RoomHeader;
+const mapStateToProps = state => ({
+  roomMembers: state.chat.roomNames
+});
+
+export default connect(mapStateToProps)(RoomHeader);
