@@ -257,7 +257,7 @@ export const logout = () => dispatch => {
 };
 
 // Sockets actions
-export const joinRoom = (user, roomId) => async dispatch => {
+export const joinRoom = (user, roomId) => dispatch => {
   // const { name } = user.name;
   console.log(user.name, roomId);
 
@@ -267,13 +267,9 @@ export const joinRoom = (user, roomId) => async dispatch => {
   });
 };
 
-export const sendMessage = ({ roomId, message }) => async dispatch => {
+export const sendMessage = ({ roomId, message }) => dispatch => {
   socket.emit('sendMessage', { roomId, message });
   dispatch({
     type: SEND_MESSAGE
   });
 };
-
-// export const messageReceived = ({roomId, message}) => async dispatch => {
-//   socket.emit('sendMessage', { roomId, message }, setMessage(''));
-// }

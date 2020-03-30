@@ -32,15 +32,20 @@ app.use('/api/messages', require('./routes/api/messages'));
 
 // Run when client connects
 io.on('connection', socket => {
-  socket.on('join', (user, roomId, callback) => {
-    console.log('Join room: ' + user.name, roomId);
+  socket.emit('message', 'Welcome to the server!');
+
+  socket.on('join', (user, roomId) => {
+    console.log('Join room: ' + user.name, roomId, socket.id);
     // Join the room
-    socket.join(roomId, () => {
-      // Send welcome message as test
-      socket.broadcast
-        .to(roomId)
-        .emit('message', `${user.name} has joined the room!`);
-    });
+    socket.join(roomId);
+
+    // Send welcome message as test
+    socket.emit('message', `${socket.id} has joined the room!`);
+    io.of('/')
+      .in(roomId)
+      .clients((error, rooms) => {
+        console.log(rooms);
+      });
   });
 
   socket.on('sendMessage', ({ roomId, message }, callback) => {
