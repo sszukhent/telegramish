@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment, lazy, Suspense } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 // import queryString from 'query-string';
 // import io from 'socket.io-client';
 import socket from '../../utils/socketConnection';
