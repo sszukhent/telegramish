@@ -256,20 +256,33 @@ export const logout = () => dispatch => {
   });
 };
 
-// Sockets actions
-export const joinRoom = (user, roomId) => dispatch => {
+// Sockets actions - Handled by middleware
+export const joinRoom = (user, roomId) => {
   // const { name } = user.name;
-  console.log(user.name, roomId);
+  // console.log(user.name, roomId);
 
-  socket.emit('join', user, roomId);
-  dispatch({
-    type: JOIN_ROOM
-  });
+  // socket.emit('join', user, roomId);
+  // dispatch({
+  //   type: JOIN_ROOM
+  // });
+  return {
+    event: 'join',
+    emit: true,
+    payload: {
+      user,
+      roomId
+    }
+  };
 };
 
-export const sendMessage = ({ roomId, message }) => dispatch => {
-  socket.emit('sendMessage', { roomId, message });
-  dispatch({
-    type: SEND_MESSAGE
-  });
+export const sendMessage = ({ roomId, message }) => {
+  // socket.emit('sendMessage', { roomId, message });
+  return {
+    event: 'messageToServer',
+    emit: true,
+    payload: {
+      roomId,
+      message
+    }
+  };
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 // import queryString from 'query-string';
 // import io from 'socket.io-client';
-import socket from '../../utils/socketConnection';
+
 import Messages from '../Messages/Messages';
 import UserList from '../UserList/UserList';
 import ChatInput from '../ChatInput/ChatInput';
@@ -19,60 +19,56 @@ import '../Components.css';
 
 const Chat = props => {
   const { name, roomId, setMessages } = props;
-  const [message, setMessage] = useState('');
+  // const [message, setMessage] = useState('');
   const messagesEndRef = React.createRef();
   console.log(roomId);
   // console.log(io);
 
   // Join the room
-  useEffect(() => {
-    console.log('I was triggered during componentDidMount');
+  // useEffect(() => {
+  //   console.log('I was triggered during componentDidMount');
 
-    return () => {
-      socket.emit('disconnect', name);
+  //   return () => {
+  //     socket.emit('disconnect', name);
 
-      socket.off();
-    };
-  }, []);
+  //     socket.off();
+  //   };
+  // }, [name]);
 
-  // Set messages
-  useEffect(() => {
-    console.log('I was triggered during sendMessage');
+  // // Set messages
+  // useEffect(() => {
+  //   console.log('I was triggered during sendMessage');
 
-    socket.on('message', message => {
-      setMessages(messageFormat(name, message));
-    });
-  }, [socket]);
+  //   socket.on('message', message => {
+  //     setMessages(messageFormat(name, message));
+  //   });
+  // }, [name, setMessages]);
 
   return (
-    console.log('I was triggered during render ' + socket.id),
-    (
-      <Fragment>
-        {/* add className='container' when done */}
-        <div id='app-container'>
-          <div id='wrapper' className='card'>
-            <div className='row app-header' style={{ margin: '0 auto' }}>
-              <Search />
+    <Fragment>
+      {/* add className='container' when done */}
+      <div id='app-container'>
+        <div id='wrapper' className='card'>
+          <div className='row app-header' style={{ margin: '0 auto' }}>
+            <Search />
 
-              <RoomHeader />
-            </div>
+            <RoomHeader />
+          </div>
 
-            <div
-              className='row app-body'
-              style={{ minHeight: '82vh', margin: '0 auto' }}
-            >
-              <UserList />
-              <Messages messagesEndRef={messagesEndRef} />
-              <ChatInput
-                message={message}
-                setMessage={setMessage}
-                // sendMessage={sendMessage}
-              />
-            </div>
+          <div
+            className='row app-body'
+            style={{ minHeight: '82vh', margin: '0 auto' }}
+          >
+            <UserList />
+            <Messages messagesEndRef={messagesEndRef} />
+            <ChatInput
+
+            // sendMessage={sendMessage}
+            />
           </div>
         </div>
-      </Fragment>
-    )
+      </div>
+    </Fragment>
   );
 };
 

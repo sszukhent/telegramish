@@ -34,7 +34,7 @@ app.use('/api/messages', require('./routes/api/messages'));
 io.on('connection', socket => {
   socket.emit('message', 'Welcome to the server!');
 
-  socket.on('join', (user, roomId) => {
+  socket.on('join', ({ user, roomId }) => {
     console.log('Join room: ' + user.name, roomId, socket.id);
     // Join the room
     socket.join(roomId);
@@ -48,10 +48,17 @@ io.on('connection', socket => {
       });
   });
 
-  socket.on('sendMessage', ({ roomId, message }, callback) => {
-    socket.to(roomId).emit('message', message);
+  socket.on('messageToServer', ({ roomId, message }, callback) => {
+    // const roomTitle = Object.keys(socket.rooms)[1];
 
     console.log('Send Message: ' + roomId, message);
+    // console.log(socket.rooms);
+    // console.log(Object.keys(socket.rooms)[1]);
+    // const roomTitle = Object.keys(socket.rooms)[1];
+    // io.of('/')
+    //   .to(roomTitle)
+    //   .emit('message', message);
+    socket.emit('messageFromServer', message);
   });
 
   //  Run when client disconnects

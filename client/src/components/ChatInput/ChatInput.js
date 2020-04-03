@@ -9,8 +9,6 @@ import { UserList } from '../UserList/UserList';
 Modal.setAppElement('#root');
 
 const ChatInput = ({
-  message,
-  setMessage,
   sendMessage,
   logout,
   currentUser,
@@ -18,6 +16,7 @@ const ChatInput = ({
   newConvo,
   roomId
 }) => {
+  const [message, setMessage] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const usersList = users.filter(user => user._id !== currentUser._id);
@@ -71,7 +70,7 @@ const ChatInput = ({
               onChange={({ target: { value } }) => setMessage(value)}
               onKeyPress={event =>
                 event.key === 'Enter'
-                  ? sendMessage({ roomId, message }) && setMessage('')
+                  ? sendMessage({ roomId, message }, setMessage(''))
                   : null
               }
             />
@@ -79,7 +78,7 @@ const ChatInput = ({
           <div id='submit-btn-chat' className='col s1 offset-s1'>
             <i
               className='far fa-paper-plane no-mp'
-              onClick={e => sendMessage(e)}
+              onClick={() => sendMessage({ roomId, message }, setMessage(''))}
             ></i>
           </div>
         </div>
