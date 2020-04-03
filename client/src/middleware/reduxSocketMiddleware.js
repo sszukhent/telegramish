@@ -1,9 +1,7 @@
 import io from 'socket.io-client';
 
 export default function socketMiddleware() {
-  const socket = io.connect('http://localhost:5000', {
-    transports: ['websocket', 'polling']
-  });
+  const socket = io.connect('http://localhost:5000');
 
   return ({ dispatch }) => next => action => {
     if (typeof action === 'function') {
@@ -28,7 +26,7 @@ export default function socketMiddleware() {
     }
     // Receiving data from server to client
     if (socket.on('messageFromServer')) {
-      console.log('Yup, I just got triggered!');
+      console.log('You just got something from the server.');
     }
 
     let handleEvent = handle;

@@ -258,13 +258,6 @@ export const logout = () => dispatch => {
 
 // Sockets actions - Handled by middleware
 export const joinRoom = (user, roomId) => {
-  // const { name } = user.name;
-  // console.log(user.name, roomId);
-
-  // socket.emit('join', user, roomId);
-  // dispatch({
-  //   type: JOIN_ROOM
-  // });
   return {
     event: 'join',
     emit: true,
@@ -276,7 +269,6 @@ export const joinRoom = (user, roomId) => {
 };
 
 export const sendMessage = ({ roomId, message }) => {
-  // socket.emit('sendMessage', { roomId, message });
   return {
     event: 'messageToServer',
     emit: true,

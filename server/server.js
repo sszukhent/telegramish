@@ -4,16 +4,13 @@ const connectDB = require('./config/db');
 const http = require('http');
 const socketio = require('socket.io');
 
-const messageFormat = require('../client/src/components/Chat/MessageFormat');
 const PORT = process.env.PORT || 5000;
 
 const router = require('./router');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server, {
-  transports: ['websocket', 'polling']
-});
+const io = socketio(server);
 
 // Connect to DB
 connectDB();
@@ -32,15 +29,13 @@ app.use('/api/messages', require('./routes/api/messages'));
 
 // Run when client connects
 io.on('connection', socket => {
-  socket.emit('message', 'Welcome to the server!');
-
   socket.on('join', ({ user, roomId }) => {
     console.log('Join room: ' + user.name, roomId, socket.id);
     // Join the room
     socket.join(roomId);
 
     // Send welcome message as test
-    socket.emit('message', `${socket.id} has joined the room!`);
+    socket.emit('messageFromServer', `${socket.id} has joined the room!`);
     io.of('/')
       .in(roomId)
       .clients((error, rooms) => {
@@ -48,22 +43,16 @@ io.on('connection', socket => {
       });
   });
 
-  socket.on('messageToServer', ({ roomId, message }, callback) => {
-    // const roomTitle = Object.keys(socket.rooms)[1];
-
+  // Incoming message from client
+  socket.on('messageToServer', ({ roomId, message }) => {
     console.log('Send Message: ' + roomId, message);
-    // console.log(socket.rooms);
-    // console.log(Object.keys(socket.rooms)[1]);
-    // const roomTitle = Object.keys(socket.rooms)[1];
-    // io.of('/')
-    //   .to(roomTitle)
-    //   .emit('message', message);
+
     socket.emit('messageFromServer', message);
   });
 
   //  Run when client disconnects
   socket.on('disconnect', () => {
-    io.emit('message', `${socket.id} has left the chat.`);
+    io.emit('messageFromServer', `${socket.id} has left the chat.`);
   });
 });
 
