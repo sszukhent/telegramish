@@ -31,7 +31,7 @@ export default function(state = initialState, action) {
         ...state,
         messages: state.currentConversations
           .find(x => x._id === payload.roomId)
-          .messages.push(payload.message)
+          .messages.push(payload.messageFormatted)
       };
     case NEW_CONVO:
       return {

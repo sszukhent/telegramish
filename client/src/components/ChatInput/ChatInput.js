@@ -1,17 +1,17 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actions';
 import Modal from 'react-modal';
 import '../Components.css';
 import '../ModalStyles/Modal.css';
-import { UserList } from '../UserList/UserList';
 Modal.setAppElement('#root');
 
 const ChatInput = ({
   sendMessage,
   logout,
   currentUser,
+  name,
   users,
   newConvo,
   roomId
@@ -70,7 +70,7 @@ const ChatInput = ({
               onChange={({ target: { value } }) => setMessage(value)}
               onKeyPress={event =>
                 event.key === 'Enter'
-                  ? sendMessage({ roomId, message }, setMessage(''))
+                  ? sendMessage({ roomId, name, message }, setMessage(''))
                   : null
               }
             />
@@ -78,7 +78,9 @@ const ChatInput = ({
           <div id='submit-btn-chat' className='col s1 offset-s1'>
             <i
               className='far fa-paper-plane no-mp'
-              onClick={() => sendMessage({ roomId, message }, setMessage(''))}
+              onClick={() =>
+                sendMessage({ roomId, name, message }, setMessage(''))
+              }
             ></i>
           </div>
         </div>
@@ -191,6 +193,7 @@ const ChatInput = ({
 };
 
 const mapStateToProps = state => ({
+  name: state.auth.user.name,
   currentUser: state.auth.user,
   users: state.auth.users,
   roomId: state.chat.roomId

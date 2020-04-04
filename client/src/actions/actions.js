@@ -268,12 +268,13 @@ export const joinRoom = (user, roomId) => {
   };
 };
 
-export const sendMessage = ({ roomId, message }) => {
+export const sendMessage = ({ roomId, name, message }) => {
   return {
     event: 'messageToServer',
     emit: true,
     payload: {
       roomId,
+      name,
       message
     }
   };

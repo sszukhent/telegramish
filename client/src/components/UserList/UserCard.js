@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import placeholderImg from '../../img/placeholder.png';
 import * as actionCreators from '../../actions/actions';
 
-const UserCard = props => {
+const UserCard = (props) => {
   const {
     currUser,
     // lastMessage: { text, created },
@@ -12,7 +12,7 @@ const UserCard = props => {
     selectConvo,
     setName,
     setRoom,
-    joinRoom
+    joinRoom,
   } = props;
   let text;
 
@@ -26,7 +26,7 @@ const UserCard = props => {
   // Trim the string for preview text
 
   const convoCardMembers = members.filter(
-    member => member._id !== currUser._id
+    (member) => member._id !== currUser._id
   );
 
   const userName = currUser.name;
@@ -43,6 +43,9 @@ const UserCard = props => {
     <div
       id={_id}
       className='collection-item avatar chat-contacts-user-card'
+      onLoad={() => {
+        joinRoom(currUser, _id);
+      }}
       onClick={() => {
         selectConvo(_id);
         setName(userName);
@@ -68,9 +71,9 @@ const UserCard = props => {
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   currUser: state.auth.user,
-  currentConversations: state.currentConversations
+  currentConversations: state.currentConversations,
 });
 
 export default connect(mapStateToProps, actionCreators)(UserCard);

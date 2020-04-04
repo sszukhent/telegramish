@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actions';
 import '../Components.css';
 
-export const UserList = props => {
+export const UserList = (props) => {
   const { conversations, currUser } = props;
 
   const conversationsList =
     conversations.length > 0
-      ? conversations.filter(currConversation =>
-          currConversation.members.find(member => member._id === currUser._id)
+      ? conversations.filter((currConversation) =>
+          currConversation.members.find((member) => member._id === currUser._id)
         )
       : [];
 
@@ -28,7 +28,7 @@ export const UserList = props => {
                 key={i}
                 style={{
                   border: 'solid .1rem rgba(0, 0, 0, .1)',
-                  paddingBottom: '.6rem'
+                  paddingBottom: '.6rem',
                 }}
               >
                 <UserCard conversation={conversation} />
@@ -51,13 +51,10 @@ export const UserList = props => {
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   currUser: state.auth.user,
   users: state.auth.users,
-  conversations: state.conversations.currentConversations
-  // members: state.conversations.currentConversations[0].members,
-  // messages: state.conversations.currentConversations[0].messages,
-  // loading: state.auth.loading
+  conversations: state.conversations.currentConversations,
 });
 
 export default connect(mapStateToProps, actionCreators)(UserList);

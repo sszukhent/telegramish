@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactEmoji from 'react-emoji';
 import { connect } from 'react-redux';
+import io from 'socket.io-client';
 
 import '../Components.css';
 

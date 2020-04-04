@@ -17,7 +17,7 @@ import '../Components.css';
 //   transports: ['websocket', 'polling']
 // });
 
-const Chat = props => {
+const Chat = (props) => {
   const { name, roomId, setMessages } = props;
   // const [message, setMessage] = useState('');
   const messagesEndRef = React.createRef();
@@ -72,14 +72,14 @@ const Chat = props => {
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   messages: state.conversations.messages,
   users: state.auth.users,
   members: state.conversations.members,
   loading: state.auth.loading,
   name: state.chat.name,
   roomId: state.chat.roomId,
-  currentConversations: state.currentConversations
+  currentConversations: state.currentConversations,
 });
 
 export default connect(mapStateToProps, actionCreators)(Chat);

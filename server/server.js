@@ -28,14 +28,13 @@ app.use('/api/conversations', require('./routes/api/conversations'));
 app.use('/api/messages', require('./routes/api/messages'));
 
 // Run when client connects
-io.on('connection', socket => {
+io.on('connection', (socket) => {
   socket.on('join', ({ user, roomId }) => {
     console.log('Join room: ' + user.name, roomId, socket.id);
     // Join the room
     socket.join(roomId);
 
     // Send welcome message as test
-    socket.emit('messageFromServer', `${socket.id} has joined the room!`);
     io.of('/')
       .in(roomId)
       .clients((error, rooms) => {
@@ -44,15 +43,16 @@ io.on('connection', socket => {
   });
 
   // Incoming message from client
-  socket.on('messageToServer', ({ roomId, message }) => {
-    console.log('Send Message: ' + roomId, message);
+  socket.on('messageToServer', ({ roomId, name, message }) => {
+    // Received message sent back to all in the room
+    io.to(roomId).emit('messageFromServer', { roomId, name, message });
 
-    socket.emit('messageFromServer', message);
+    console.log('Send Message: ' + roomId, message);
   });
 
   //  Run when client disconnects
   socket.on('disconnect', () => {
-    io.emit('messageFromServer', `${socket.id} has left the chat.`);
+    console.log('User left the server.');
   });
 });
 

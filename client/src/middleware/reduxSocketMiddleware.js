@@ -1,14 +1,28 @@
 import io from 'socket.io-client';
+import store from '../store';
+import messageFormat from '../utils/messageFormat';
+import { SET_MESSAGES } from '../actions/constants';
+// import { connect } from 'react-redux';
 
 export default function socketMiddleware() {
   const socket = io.connect('http://localhost:5000');
 
-  return ({ dispatch }) => next => action => {
+  socket.on('messageFromServer', ({ roomId, name, message }) => {
+    console.log(roomId, name, message);
+    const messageFormatted = messageFormat(name, message);
+    console.log(messageFormatted);
+    store.dispatch({
+      type: SET_MESSAGES,
+      payload: { roomId, messageFormatted },
+    });
+  });
+
+  return ({ dispatch }) => (next) => (action) => {
     if (typeof action === 'function') {
       return next(action);
     }
 
-    const { event, leave, handle, emit, payload, ...rest } = action;
+    const { event, leave, handle, emit, fromServer, payload, ...rest } = action;
 
     if (!event) {
       return next(action);
@@ -24,14 +38,10 @@ export default function socketMiddleware() {
       console.log(payload);
       return;
     }
-    // Receiving data from server to client
-    if (socket.on('messageFromServer')) {
-      console.log('You just got something from the server.');
-    }
 
     let handleEvent = handle;
     if (typeof handleEvent === 'string') {
-      handleEvent = result => dispatch({ type: handle, result, ...rest });
+      handleEvent = (result) => dispatch({ type: handle, result, ...rest });
     }
     return socket.on(event, handleEvent);
   };
