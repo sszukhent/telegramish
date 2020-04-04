@@ -1,7 +1,6 @@
-import React, { useEffect, Fragment } from 'react';
+import React from 'react';
 import UserCard from '../UserList/UserCard';
 import { connect } from 'react-redux';
-import * as actionCreators from '../../actions/actions';
 import '../Components.css';
 
 export const UserList = (props) => {
@@ -16,38 +15,32 @@ export const UserList = (props) => {
 
   console.log(conversationsList);
 
-  // const lastMessage = messages.slice(-1)[0] || {};
-
   return conversationsList.length > 0 ? (
-    <Fragment>
-      <div className='col s4 chat-contacts'>
-        <div className='chat-contacts-scroll'>
-          <ul className='collection'>
-            {conversationsList.map((conversation, i) => (
-              <div
-                key={i}
-                style={{
-                  border: 'solid .1rem rgba(0, 0, 0, .1)',
-                  paddingBottom: '.6rem',
-                }}
-              >
-                <UserCard conversation={conversation} />
-              </div>
-            ))}
-          </ul>
-        </div>
+    <div className='col s4 chat-contacts'>
+      <div className='chat-contacts-scroll'>
+        <ul className='collection'>
+          {conversationsList.map((conversation, i) => (
+            <div
+              key={i}
+              style={{
+                border: 'solid .1rem rgba(0, 0, 0, .1)',
+                paddingBottom: '.6rem',
+              }}
+            >
+              <UserCard conversation={conversation} />
+            </div>
+          ))}
+        </ul>
       </div>
-    </Fragment>
+    </div>
   ) : (
-    <Fragment>
-      <div className='col s4 chat-contacts'>
-        <div className='chat-contacts-scroll'>
-          <div>
-            <p>{conversations.msg}</p>
-          </div>
+    <div className='col s4 chat-contacts'>
+      <div className='chat-contacts-scroll'>
+        <div>
+          <p>{conversations.msg}</p>
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 };
 
@@ -57,4 +50,4 @@ const mapStateToProps = (state) => ({
   conversations: state.conversations.currentConversations,
 });
 
-export default connect(mapStateToProps, actionCreators)(UserList);
+export default connect(mapStateToProps)(UserList);

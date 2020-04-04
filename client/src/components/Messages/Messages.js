@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import '../Components.css';
 
 const Messages = (props) => {
+  console.log(props);
   const { currentConversations } = props;
   const selectedConversation =
     currentConversations.length > 0

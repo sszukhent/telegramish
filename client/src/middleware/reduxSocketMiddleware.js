@@ -1,11 +1,10 @@
 import io from 'socket.io-client';
 import store from '../store';
 import messageFormat from '../utils/messageFormat';
-import { SET_MESSAGES } from '../actions/constants';
-// import { connect } from 'react-redux';
+import { SET_MESSAGES, ENDPOINT } from '../actions/constants';
 
 export default function socketMiddleware() {
-  const socket = io.connect('http://localhost:5000');
+  const socket = io.connect(ENDPOINT);
 
   socket.on('messageFromServer', ({ roomId, name, message }) => {
     console.log(roomId, name, message);
