@@ -10,8 +10,8 @@ export const Message = ({
   message: {
     text,
     user: { name },
-    created
-  }
+    created,
+  },
 }) => {
   let isSentByCurrentUser = name === currUserName;
 
@@ -21,7 +21,7 @@ export const Message = ({
 
   const currTime = new Intl.DateTimeFormat('en-US', {
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   }).format(timestamp);
 
   if (name === trimmedName) {
@@ -46,8 +46,8 @@ export const Message = ({
   );
 };
 
-const mapStateToProps = state => ({
-  currUserName: state.auth.user.name
+const mapStateToProps = (state) => ({
+  currUserName: state.auth.user.name,
 });
 
 export default connect(mapStateToProps)(Message);
