@@ -5,17 +5,19 @@ import {
   SELECT_CONVERSATION,
   DESELECT_CONVERSATION,
   SET_MESSAGES,
+  TYPING,
+  STOPPED_TYPING,
   LOGOUT,
-  NEW_CONVO
+  NEW_CONVO,
 } from '../actions/constants';
 
 const initialState = {
   currentConversations: [],
   convoStateLoading: false,
-  error: {}
+  error: {},
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
@@ -26,17 +28,16 @@ export default function(state = initialState, action) {
     //     loading: true
     //   };
     case SET_MESSAGES:
-      console.log(payload.roomId);
       return {
         ...state,
         messages: state.currentConversations
-          .find(x => x._id === payload.roomId)
-          .messages.push(payload.messageFormatted)
+          .find((x) => x._id === payload.roomId)
+          .messages.push(payload.messageFormatted),
       };
     case NEW_CONVO:
       return {
         ...state,
-        convoStateLoading: false
+        convoStateLoading: false,
       };
 
     case LOAD_CONVERSATION:
@@ -44,45 +45,61 @@ export default function(state = initialState, action) {
       return {
         ...state,
         currentConversations: payload,
-        convoStateLoading: true
+        convoStateLoading: true,
       };
     case CONVO_STATE_LOADED:
       return {
         ...state,
-        convoStateLoading: false
+        convoStateLoading: false,
       };
     case SELECT_CONVERSATION:
-      // console.log(
-      //   state.currentConversations.find(x => x._id === payload).selected
-      // );
       return {
         ...state,
         selected: (state.currentConversations.find(
-          x => x._id === payload
-        ).selected = true)
+          (x) => x._id === payload
+        ).selected = true),
       };
     case DESELECT_CONVERSATION:
-      // console.log(
-      //   state.currentConversations.find(x => x._id === payload).selected
-      // );
       return {
         ...state,
         selected: (state.currentConversations.find(
-          x => x.selected === true
-        ).selected = false)
+          (x) => x.selected === true
+        ).selected = false),
+      };
+    case TYPING:
+      return {
+        ...state,
+        typing: (state.currentConversations.find(
+          (x) => x._id === payload.roomId
+        ).typing = true),
+
+        userTyping: (state.currentConversations.find(
+          (x) => x._id === payload.roomId
+        ).userTyping = payload.currentUser.name),
+      };
+    case STOPPED_TYPING:
+      return {
+        ...state,
+        typing: (state.currentConversations.find(
+          (x) => x._id === payload.roomId
+        ).typing = false),
+
+        userTyping: (state.currentConversations.find(
+          (x) => x._id === payload.roomId
+        ).userTyping = ''),
       };
     case CONVERSATION_ERROR:
       return {
         ...state,
         error: payload,
-        convoStateLoading: false
+        convoStateLoading: false,
       };
     case LOGOUT:
       return {
         ...state,
         currentConversations: [],
         convoStateLoading: false,
-        error: {}
+        error: {},
       };
 
     default:

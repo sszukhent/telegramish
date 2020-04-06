@@ -7,23 +7,22 @@ import * as actionCreators from '../../actions/actions';
 const UserCard = (props) => {
   const {
     currUser,
-    // lastMessage: { text, created },
-    conversation: { _id, members, selected },
+    conversation: { _id, members, messages, typing, userTyping },
     selectConvo,
     setName,
     setRoom,
     joinRoom,
   } = props;
-  let text;
 
-  // const timestamp = !created ? '' : Date.parse(created); // This would be the timestamp you want to format
+  const lastMessage = messages.slice(-1)[0] || {};
 
-  // const currTime = new Intl.DateTimeFormat('en-US', {
-  //   hour: '2-digit',
-  //   minute: '2-digit'
-  // }).format(timestamp);
+  const { text, created } = lastMessage;
+  const timestamp = !created ? '' : Date.parse(created);
 
-  // Trim the string for preview text
+  const currTime = new Intl.DateTimeFormat('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(timestamp);
 
   const convoCardMembers = members.filter(
     (member) => member._id !== currUser._id
@@ -31,13 +30,11 @@ const UserCard = (props) => {
 
   const userName = currUser.name;
 
-  console.log(_id, selected);
   const previewLength = 30;
   const previewText = !text
     ? 'No conversations with this user'
     : text.substring(0, previewLength);
 
-  console.log(convoCardMembers);
   // enterConvo(_id)
   return (
     <div
@@ -61,19 +58,28 @@ const UserCard = (props) => {
       ))}
 
       <p>
-        <span className='chat-contacts-current-user'>You: </span>{' '}
-        {`${previewText}...`}
+        <span className='chat-contacts-current-user'>Last: </span>{' '}
+        {typing && userTyping !== currUser.name
+          ? `${userTyping} is typing...`
+          : `${previewText}...`}
       </p>
       <span className='secondary-content'>
-        <i>{'currTime'}</i>
+        <i>{!text ? '' : currTime}</i>
       </span>
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
+  typing: state.conversations.currentConversations.find(
+    (x) => x.typing === true
+  ),
+
+  userTyping: state.conversations.currentConversations.find(
+    (x) => x.userTyping.length > 0
+  ),
   currUser: state.auth.user,
-  currentConversations: state.currentConversations,
+  currentConversations: state.conversations.currentConversations,
 });
 
 export default connect(mapStateToProps, actionCreators)(UserCard);

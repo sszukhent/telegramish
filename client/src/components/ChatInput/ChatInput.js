@@ -5,6 +5,7 @@ import * as actionCreators from '../../actions/actions';
 import Modal from 'react-modal';
 import '../Components.css';
 import '../ModalStyles/Modal.css';
+import { useEffect } from 'react';
 Modal.setAppElement('#root');
 
 const ChatInput = ({
@@ -14,15 +15,52 @@ const ChatInput = ({
   name,
   users,
   newConvo,
-  roomId
+  roomId,
+  isTyping,
+  sendTyping,
 }) => {
   const [message, setMessage] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [startTyping, setStartTyping] = useState(false);
+  const [timeout, setNewTimeout] = useState(null);
 
-  const usersList = users.filter(user => user._id !== currentUser._id);
+  const usersList = users.filter((user) => user._id !== currentUser._id);
 
   let timestamp;
   let date;
+
+  // Someone is typing section:
+
+  // Stopped typing
+  const stopTyping = () => {
+    setStartTyping(false);
+  };
+
+  // Check if they are still typing
+  const checkTyping = () => {
+    setNewTimeout(clearTimeout(timeout));
+    setNewTimeout(
+      setTimeout(() => {
+        stopTyping();
+      }, 3000)
+    );
+  };
+
+  // Someone started typing
+  const clientTyping = () => {
+    if (!startTyping) {
+      setStartTyping(true);
+      checkTyping();
+    }
+  };
+  useEffect(() => {
+    if (startTyping) {
+      sendTyping({ startTyping, roomId, currentUser });
+    } else if (!startTyping) {
+      sendTyping({ startTyping, roomId, currentUser });
+    }
+    return;
+  }, [startTyping, sendTyping]);
 
   return (
     <div className='row app-footer'>
@@ -68,9 +106,18 @@ const ChatInput = ({
               className='col s8'
               value={message}
               onChange={({ target: { value } }) => setMessage(value)}
-              onKeyPress={event =>
-                event.key === 'Enter'
-                  ? sendMessage({ roomId, name, message }, setMessage(''))
+              onKeyDown={(event) =>
+                event.key !== 'Enter' && !startTyping
+                  ? clientTyping()
+                  : checkTyping()
+              }
+              onKeyPress={(event) =>
+                event.key === 'Enter' && message.length > 0 && message !== ' '
+                  ? sendMessage(
+                      { roomId, name, message },
+                      setMessage(''),
+                      stopTyping()
+                    )
                   : null
               }
             />
@@ -149,7 +196,7 @@ const ChatInput = ({
                               {
                                 ((timestamp = Date.parse(listUser.date)),
                                 (date = new Intl.DateTimeFormat('en-US', {
-                                  'es-US': 'M/d/yyyy'
+                                  'es-US': 'M/d/yyyy',
                                 }).format(timestamp)),
                                 date)
                               }
@@ -168,7 +215,7 @@ const ChatInput = ({
                                 onClick={() => {
                                   newConvo(
                                     {
-                                      members: `${currentUser._id}, ${listUser._id}`
+                                      members: `${currentUser._id}, ${listUser._id}`,
                                     },
                                     setModalIsOpen(false)
                                   );
@@ -192,11 +239,12 @@ const ChatInput = ({
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
+  isTyping: state.chat.isTyping,
   name: state.auth.user.name,
   currentUser: state.auth.user,
   users: state.auth.users,
-  roomId: state.chat.roomId
+  roomId: state.chat.roomId,
 });
 
 export default connect(mapStateToProps, actionCreators)(ChatInput);

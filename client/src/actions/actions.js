@@ -2,9 +2,7 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import setAuthToken from '../utils/setAuthToken';
 import {
-  JOIN_ROOM,
   SET_MESSAGES,
-  SEND_MESSAGE,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   LOGIN_SUCCESS,
@@ -23,40 +21,37 @@ import {
   GET_USERS_LIST,
   AUTH_STATE_LOADED,
   CONVO_STATE_LOADED,
-  NEW_CONVO
+  NEW_CONVO,
 } from './constants';
 
-const socket = io(ENDPOINT);
-
 // Set Room
-export const setRoom = (id, members) => dispatch => {
-  const memberNames = members.map(member => member.name.split(' ')[0]);
-  console.log(memberNames);
+export const setRoom = (id, members) => (dispatch) => {
+  const memberNames = members.map((member) => member.name.split(' ')[0]);
 
   dispatch({
     type: SET_ROOM_ID,
-    payload: id
+    payload: id,
   });
   dispatch({
     type: SET_ROOM_NAME,
-    payload: memberNames
+    payload: memberNames,
   });
 };
 
 // Set Name
-export const setName = name => dispatch => {
+export const setName = (name) => (dispatch) => {
   dispatch({
     type: SET_NAME,
-    payload: name
+    payload: name,
   });
 };
 
 // Create new conversation
-export const newConvo = members => async dispatch => {
+export const newConvo = (members) => async (dispatch) => {
   const config = {
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   };
 
   try {
@@ -67,59 +62,60 @@ export const newConvo = members => async dispatch => {
     );
 
     dispatch({
-      type: NEW_CONVO
+      type: NEW_CONVO,
     });
     dispatch(loadConvo());
   } catch (err) {
     dispatch({
       type: AUTH_ERROR,
-      payload: err
+      payload: err,
     });
   }
 };
 
 // Load Conversation
-export const loadConvo = () => async dispatch => {
+export const loadConvo = () => async (dispatch) => {
   try {
     const res = await axios.get(`${ENDPOINT}/api/conversations`);
 
     dispatch({
       type: LOAD_CONVERSATION,
-      payload: res.data
+      payload: res.data,
     });
   } catch (err) {
     dispatch({
-      type: AUTH_ERROR
+      type: AUTH_ERROR,
     });
   }
 };
 
 // Select conversation
 export const selectConvo = (convo_id, name) => async (dispatch, state) => {
-  // console.log(state().conversations.currentConversations);
   try {
     // Change Conversation:
     // Check if the user clicked on a new conversation. If so, deselect any other conversations and then select the new conversation.
     if (
       state().conversations.currentConversations.find(
-        x => x.selected === true
+        (x) => x.selected === true
       ) &&
       state().conversations.currentConversations.find(
-        x => x.selected === true
+        (x) => x.selected === true
       ) !==
-        state().conversations.currentConversations.find(x => x._id === convo_id)
+        state().conversations.currentConversations.find(
+          (x) => x._id === convo_id
+        )
     ) {
       dispatch({
-        type: DESELECT_CONVERSATION
+        type: DESELECT_CONVERSATION,
       });
       dispatch({
         type: SELECT_CONVERSATION,
-        payload: convo_id
+        payload: convo_id,
       });
     }
     // The user is deselecting the currently selected conversation.
     else if (
-      state().conversations.currentConversations.find(x => x._id === convo_id)
+      state().conversations.currentConversations.find((x) => x._id === convo_id)
         .selected === true
     ) {
       return;
@@ -128,62 +124,61 @@ export const selectConvo = (convo_id, name) => async (dispatch, state) => {
     else {
       dispatch({
         type: SELECT_CONVERSATION,
-        payload: convo_id
+        payload: convo_id,
       });
     }
   } catch (err) {
-    console.log(err);
     dispatch({
       type: CONVERSATION_ERROR,
-      payload: err
+      payload: err,
     });
   }
 };
 
 // Load Users List
-export const loadUsersList = () => async dispatch => {
+export const loadUsersList = () => async (dispatch) => {
   try {
     const res = await axios.get(`${ENDPOINT}/api/auth/all`);
 
     dispatch({
       type: GET_USERS_LIST,
-      payload: res.data
+      payload: res.data,
     });
   } catch (err) {
     dispatch({
       type: AUTH_ERROR,
-      payload: err
+      payload: err,
     });
   }
 };
 
 // State loaded
-export const authStateLoaded = () => dispatch => {
+export const authStateLoaded = () => (dispatch) => {
   dispatch({
-    type: AUTH_STATE_LOADED
+    type: AUTH_STATE_LOADED,
   });
 };
 
-export const convoStateLoaded = () => dispatch => {
+export const convoStateLoaded = () => (dispatch) => {
   dispatch({
-    type: CONVO_STATE_LOADED
+    type: CONVO_STATE_LOADED,
   });
 };
 
 // Set current message to messages array
-export const setMessages = message => (dispatch, state) => {
+export const setMessages = (message) => (dispatch, state) => {
   dispatch({
     type: SET_MESSAGES,
-    payload: { roomId: state().chat.roomId, message }
+    payload: { roomId: state().chat.roomId, message },
   });
 };
 
 // Register User
-export const register = ({ name, email, password }) => async dispatch => {
+export const register = ({ name, email, password }) => async (dispatch) => {
   const config = {
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   };
 
   const body = JSON.stringify({ name, email, password });
@@ -193,19 +188,19 @@ export const register = ({ name, email, password }) => async dispatch => {
 
     dispatch({
       type: REGISTER_SUCCESS,
-      payload: res.data
+      payload: res.data,
     });
 
     dispatch(loadUser());
   } catch (err) {
     dispatch({
-      type: REGISTER_FAIL
+      type: REGISTER_FAIL,
     });
   }
 };
 
 // Load User
-export const loadUser = () => async dispatch => {
+export const loadUser = () => async (dispatch) => {
   if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
@@ -215,21 +210,21 @@ export const loadUser = () => async dispatch => {
 
     dispatch({
       type: USER_LOADED,
-      payload: res.data
+      payload: res.data,
     });
   } catch (err) {
     dispatch({
-      type: AUTH_ERROR
+      type: AUTH_ERROR,
     });
   }
 };
 
 // Login User
-export const login = (email, password) => async dispatch => {
+export const login = (email, password) => async (dispatch) => {
   const config = {
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   };
 
   const body = JSON.stringify({ email, password });
@@ -239,20 +234,20 @@ export const login = (email, password) => async dispatch => {
 
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: res.data
+      payload: res.data,
     });
 
     dispatch(loadUser());
   } catch (err) {
     dispatch({
-      type: LOGIN_FAIL
+      type: LOGIN_FAIL,
     });
   }
 };
 
-export const logout = () => dispatch => {
+export const logout = () => (dispatch) => {
   dispatch({
-    type: LOGOUT
+    type: LOGOUT,
   });
 };
 
@@ -263,8 +258,8 @@ export const joinRoom = (user, roomId) => {
     emit: true,
     payload: {
       user,
-      roomId
-    }
+      roomId,
+    },
   };
 };
 
@@ -275,7 +270,19 @@ export const sendMessage = ({ roomId, name, message }) => {
     payload: {
       roomId,
       name,
-      message
-    }
+      message,
+    },
+  };
+};
+
+export const sendTyping = ({ startTyping, roomId, currentUser }) => {
+  return {
+    event: 'clientIsTyping',
+    emit: true,
+    payload: {
+      startTyping,
+      roomId,
+      currentUser,
+    },
   };
 };

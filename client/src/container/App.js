@@ -13,7 +13,7 @@ if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
 
-const App = props => {
+const App = (props) => {
   const {
     authState,
     convoState,
@@ -21,7 +21,7 @@ const App = props => {
     loadUsersList,
     loadConvo,
     authStateLoaded,
-    convoStateLoaded
+    convoStateLoaded,
   } = props;
   // useEffect(() => {
   //   store.dispatch(loadUser());
@@ -60,17 +60,8 @@ const App = props => {
   }, [
     authState.user.name,
     authState.users.length,
-    convoState.currentConversations
+    convoState.currentConversations,
   ]);
-
-  console.log(authState.user, authState.users.length);
-
-  // useEffect(() => {
-  //   if (authState.users.length && authState.user.length) {
-  //     authStateLoaded();
-  //   }
-  //   return;
-  // }, []);
 
   return (
     <Router>
@@ -83,9 +74,9 @@ const App = props => {
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   authState: state.auth,
-  convoState: state.conversations
+  convoState: state.conversations,
 });
 
 export default connect(mapStateToProps, actionCreators)(App);

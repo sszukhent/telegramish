@@ -4,18 +4,26 @@ const Schema = mongoose.Schema;
 const ConversationSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'user',
   },
   members: [{ type: Schema.Types.ObjectId, ref: 'user' }],
   messages: [{ type: Schema.Types.ObjectId, ref: 'message' }],
   created: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   selected: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
+  userTyping: {
+    type: String,
+    default: '',
+  },
+  typing: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = Conversation = mongoose.model(

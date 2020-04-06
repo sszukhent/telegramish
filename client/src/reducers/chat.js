@@ -9,6 +9,8 @@ const initialState = {
   roomId: '',
   roomNames: 'Nothing Yet',
   name: '',
+  typing: false,
+  userTyping: '',
 };
 
 export default function (state = initialState, action) {

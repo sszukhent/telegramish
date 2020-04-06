@@ -50,6 +50,19 @@ io.on('connection', (socket) => {
     console.log('Send Message: ' + roomId, message);
   });
 
+  // Someone is typing
+  socket.on('clientIsTyping', ({ startTyping, roomId, currentUser }) => {
+    console.log(
+      currentUser.name + ' Started typing in room: ' + roomId,
+      startTyping
+    );
+    io.to(roomId).emit('serverSendTyping', {
+      startTyping,
+      roomId,
+      currentUser,
+    });
+  });
+
   //  Run when client disconnects
   socket.on('disconnect', () => {
     console.log('User left the server.');

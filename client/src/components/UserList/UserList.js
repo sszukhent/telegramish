@@ -13,8 +13,6 @@ export const UserList = (props) => {
         )
       : [];
 
-  console.log(conversationsList);
-
   return conversationsList.length > 0 ? (
     <div className='col s4 chat-contacts'>
       <div className='chat-contacts-scroll'>
